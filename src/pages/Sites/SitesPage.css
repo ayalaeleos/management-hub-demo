@@ -1,0 +1,97 @@
+.sites-page {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 24px 32px;
+  min-height: calc(100vh - var(--header-height));
+}
+
+.sites-page__title {
+  font-size: var(--font-size-h5);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-primary);
+  line-height: var(--line-height-h5);
+}
+
+/* Toolbar */
+.sites-page__toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.sites-page__toolbar-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.sites-page__count {
+  font-size: var(--font-size-subtitle-3);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-primary);
+  line-height: 1.57;
+  letter-spacing: 0.018px;
+  white-space: nowrap;
+}
+
+/* Table card */
+.sites-table-card {
+  background: white;
+  border: 1px solid var(--color-border-divider);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  width: 100%;
+}
+
+/* Column widths for sites table */
+.sites-data-table th.col-site-name  { width: 32%; }
+.sites-data-table th.col-timezone   { width: 28%; }
+.sites-data-table th.col-user-count { width: 18%; }
+.sites-data-table th.col-status     { width: 14%; }
+.sites-data-table th.col-actions    { width: 56px; }
+
+/* Status chip */
+.site-status-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: var(--font-weight-medium);
+  white-space: nowrap;
+  line-height: 1;
+}
+
+.site-status-chip--active {
+  background: #e8f5e9;
+  color: #1b5e20;
+}
+
+.site-status-chip--inactive {
+  background: var(--color-grey-100);
+  color: var(--color-text-secondary);
+}
+
+/* Actions column more button */
+.sites-more-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 32px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  cursor: pointer;
+  color: var(--color-text-secondary);
+  transition: background 0.15s;
+  margin: auto;
+}
+
+.sites-more-btn:hover {
+  background: var(--color-grey-100);
+}

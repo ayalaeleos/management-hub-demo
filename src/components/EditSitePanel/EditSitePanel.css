@@ -1,0 +1,29 @@
+/* Narrower panel for site editing — overrides the 383px user panel width */
+.edit-site-panel {
+  width: 383px;
+}
+
+.edit-site-panel__header {
+  padding: 24px 24px 0;
+  flex-shrink: 0;
+}
+
+.edit-site-panel__title-block {
+  margin-bottom: 16px;
+}
+
+.edit-site-panel__title {
+  font-size: var(--font-size-subtitle-3);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-primary);
+  line-height: 1.57;
+  letter-spacing: 0.018px;
+  margin-bottom: 2px;
+}
+
+.edit-site-panel__subtitle {
+  font-size: var(--font-size-body-2);
+  color: var(--color-text-secondary);
+  line-height: var(--line-height-body-2);
+  letter-spacing: 0.17px;
+}
