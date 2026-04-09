@@ -114,6 +114,7 @@
   line-height: var(--line-height-subtitle);
   overflow: hidden;
   text-overflow: ellipsis;
+  text-align: left;
 }
 
 .sidebar__nav-item__chevron {

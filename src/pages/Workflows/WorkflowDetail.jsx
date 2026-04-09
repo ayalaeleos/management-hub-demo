@@ -54,8 +54,8 @@ export default function WorkflowDetail() {
   return (
     <div className="h-full flex flex-col bg-white">
       {/* Header */}
-      <div className="px-8 pt-6 pb-5 border-b border-[#E5E5E5] bg-white">
-        <div className="flex items-center gap-2 mb-3">
+      <div className="px-8 pt-5 pb-4 border-b border-[#E5E5E5] bg-white">
+        <div className="flex items-center gap-2 mb-2.5">
           <button
             onClick={() => navigate('/workflows')}
             className="text-sm font-medium text-[#737373] hover:text-[#171717] transition-colors flex items-center gap-1"
@@ -67,7 +67,7 @@ export default function WorkflowDetail() {
           <span className="text-sm font-medium text-[#171717]">{workflow.name}</span>
         </div>
 
-        <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-3">
             <div className="w-2.5 h-2.5 rounded-full bg-[#10B981] shadow-[0_0_0_2px_rgba(46,125,50,0.2)]" />
             <h1 className="text-xl font-semibold text-[#171717] tracking-tight">
@@ -132,7 +132,7 @@ export default function WorkflowDetail() {
       </div>
 
       {/* Metrics */}
-      <div className="px-8 py-5 grid grid-cols-5 gap-4 border-b border-[#E5E5E5] bg-[#FAFAFA]">
+      <div className="px-8 py-4 grid grid-cols-5 gap-3 border-b border-[#E5E5E5] bg-[#FAFAFA]">
         <MetricCard label="Notes Scanned" value={workflow.stats.scanned.toLocaleString()} />
         <MetricCard label="Flagged" value={workflow.stats.flagged.toLocaleString()} subValue={`${workflow.stats.flagRate}%`} color="#e65100" />
         <MetricCard label="Critical" value={workflow.stats.critical.toString()} color="#c62828" />
@@ -152,16 +152,16 @@ export default function WorkflowDetail() {
             <button
               key={t.id}
               onClick={() => setTab(t.id)}
-              className={`relative py-3.5 text-sm font-medium transition-colors ${
+              className={`relative py-3 text-sm font-medium transition-colors ${
                 tab === t.id ? 'text-[#171717]' : 'text-[#737373] hover:text-[#171717]'
               }`}
             >
               <span className="flex items-center gap-2">
                 {t.label}
                 {t.count != null && t.count > 0 && (
-                  <span className={`text-[10px] font-semibold px-1.5 py-0.5 rounded-full ${
+                  <span className={`text-[10px] font-semibold rounded-full inline-flex items-center justify-center ${
                     tab === t.id ? 'bg-[#2d4ccd] text-white' : 'bg-[#F5F5F5] text-[#737373]'
-                  }`}>
+                  }`} style={{ minWidth: 18, height: 18, padding: '0 5px' }}>
                     {t.count}
                   </span>
                 )}
@@ -183,7 +183,7 @@ export default function WorkflowDetail() {
                 <select
                   value={filterStatus}
                   onChange={(e) => setFilterStatus(e.target.value)}
-                  className="px-3 py-1.5 bg-white border border-[#E5E5E5] rounded-lg text-xs font-medium text-[#171717] outline-none focus:border-[#2d4ccd] shadow-sm"
+                  className="px-3 py-1.5 mr-2 bg-white border border-[#E5E5E5] rounded-lg text-xs font-medium text-[#171717] outline-none focus:border-[#2d4ccd] shadow-sm"
                 >
                   <option value="unreviewed">Unreviewed Queue</option>
                   <option value="reviewed">Reviewed</option>
@@ -194,7 +194,7 @@ export default function WorkflowDetail() {
                 <select
                   value={filterSeverity}
                   onChange={(e) => setFilterSeverity(e.target.value)}
-                  className="px-3 py-1.5 bg-white border border-[#E5E5E5] rounded-lg text-xs font-medium text-[#171717] outline-none focus:border-[#2d4ccd] shadow-sm"
+                  className="px-3 py-1.5 mr-2 bg-white border border-[#E5E5E5] rounded-lg text-xs font-medium text-[#171717] outline-none focus:border-[#2d4ccd] shadow-sm"
                 >
                   <option value="all">All Severities</option>
                   <option value="critical">Critical</option>
@@ -345,10 +345,10 @@ function ConfigurationTab({ workflow, navigate, id }) {
 
 function MetricCard({ label, value, subValue, color = '#212121' }) {
   return (
-    <div className="p-4 rounded-xl bg-white border border-[#E5E5E5] shadow-sm">
-      <p className="text-xs font-semibold uppercase tracking-widest text-[#A3A3A3] mb-1.5">{label}</p>
+    <div className="px-4 py-3 rounded-xl bg-white border border-[#E5E5E5] shadow-sm">
+      <p className="text-[10px] font-semibold uppercase tracking-widest text-[#A3A3A3] mb-1">{label}</p>
       <div className="flex items-baseline gap-2">
-        <p className="text-xl font-semibold tracking-tight" style={{ color }}>{value}</p>
+        <p className="text-lg font-semibold tracking-tight" style={{ color }}>{value}</p>
         {subValue && <p className="text-sm font-medium text-[#737373]">{subValue}</p>}
       </div>
     </div>
@@ -397,7 +397,7 @@ function FlagDetailPanel({ flag, onClose, onAction }) {
 
   return (
     <div className="flex-1 flex flex-col bg-[#FAFAFA]">
-      <div className="px-8 py-5 border-b border-[#E5E5E5] bg-white/90 backdrop-blur-md z-10 flex items-center justify-between shrink-0">
+      <div className="px-8 py-6 border-b border-[#E5E5E5] bg-white/90 backdrop-blur-md z-10 flex items-start justify-between shrink-0">
         <div>
           <h3 className="text-lg font-semibold text-[#171717] tracking-tight mb-0.5">{flag.clientName}</h3>
           <p className="text-sm text-[#737373] font-medium">{flag.clinician} <span className="text-[#E5E5E5] mx-1.5">|</span> {flag.noteType} <span className="text-[#E5E5E5] mx-1.5">|</span> {flag.noteDate}</p>

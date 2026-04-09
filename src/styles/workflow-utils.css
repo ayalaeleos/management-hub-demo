@@ -1,7 +1,7 @@
 /* Workflow utility CSS — replaces Tailwind for workflow pages */
 
-/* Prevent SVG icons from rendering at default 300×150px */
-svg[viewBox="0 0 24 24"] {
+/* Prevent SVG icons from rendering at default 300×150px — scoped to content area only */
+.app-content svg[viewBox="0 0 24 24"] {
   display: inline-block;
   width: 1rem;
   height: 1rem;
@@ -120,6 +120,7 @@ svg[viewBox="0 0 24 24"] {
 .pl-9 { padding-left: 2.25rem; }
 .pl-11 { padding-left: 2.75rem; }
 .pr-4 { padding-right: 1rem; }
+.pr-8 { padding-right: 2rem; }
 .pr-11 { padding-right: 2.75rem; }
 
 /* ===================== MARGIN ===================== */
@@ -338,9 +339,15 @@ svg[viewBox="0 0 24 24"] {
 .inset-0 { inset: 0; }
 .top-0 { top: 0; }
 .top-1\/2 { top: 50%; }
+.top-3 { top: 0.75rem; }
+.top-4 { top: 1rem; }
 .left-3 { left: 0.75rem; }
+.left-4 { left: 1rem; }
 .right-0 { right: 0; }
+.right-3 { right: 0.75rem; }
+.right-4 { right: 1rem; }
 .bottom-0 { bottom: 0; }
+.bottom-4 { bottom: 1rem; }
 .z-10 { z-index: 10; }
 .z-20 { z-index: 20; }
 .z-50 { z-index: 50; }
@@ -371,6 +378,8 @@ svg[viewBox="0 0 24 24"] {
 .grayscale { filter: grayscale(100%); }
 .blur-sm { filter: blur(4px); }
 .backdrop-blur-sm { backdrop-filter: blur(4px); }
+.backdrop-blur-md { backdrop-filter: blur(12px); }
+.bg-white\/90 { background-color: rgba(255,255,255,0.9); }
 
 /* ===================== OUTLINE ===================== */
 .outline-none { outline: none; }

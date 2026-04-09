@@ -2,10 +2,12 @@ import React, { useState, useCallback, useRef, useEffect } from 'react';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import {
   ReactFlow,
+  ReactFlowProvider,
   Background,
   Controls,
   useNodesState,
   useEdgesState,
+  useReactFlow,
   addEdge,
   MarkerType,
   Handle,
@@ -40,13 +42,14 @@ const EDGE_DEFAULTS = {
   markerEnd: { type: MarkerType.ArrowClosed, color: '#A3A3A3' },
 };
 
-export default function WorkflowComposer() {
+function WorkflowComposerInner() {
   const navigate = useNavigate();
   const { id } = useParams();
   const location = useLocation();
   const chatEndRef = useRef(null);
   const chatScrollRef = useRef(null);
   const hasInitialized = useRef(false);
+  const { fitView } = useReactFlow();
 
   const [workflowName, setWorkflowName] = useState('');
   const [messages, setMessages] = useState([]);
@@ -144,10 +147,13 @@ export default function WorkflowComposer() {
     const newEdges = [];
     let y = 40;
 
+    const ROW_GAP = 110;   // vertical spacing between source rows
+    const COL_GAP = 200;   // horizontal spacing between columns
+
     newNodes.push({
       id: 'trigger',
       type: 'trigger',
-      position: { x: -160, y: y + ((sources.length - 1) * 120) / 2 - 20 },
+      position: { x: 0, y: y + ((sources.length - 1) * ROW_GAP) / 2 - 20 },
       data: { ...trigger },
     });
 
@@ -155,7 +161,7 @@ export default function WorkflowComposer() {
       newNodes.push({
         id: `ds-${ds.id}`,
         type: 'dataSource',
-        position: { x: 50, y: y + i * 120 },
+        position: { x: COL_GAP, y: y + i * ROW_GAP },
         data: { ...ds },
       });
       newEdges.push({
@@ -166,7 +172,7 @@ export default function WorkflowComposer() {
       });
     });
 
-    const totalSourcesHeight = (sources.length - 1) * 120;
+    const totalSourcesHeight = (sources.length - 1) * ROW_GAP;
     const centerY = y + totalSourcesHeight / 2;
 
     const processingSteps = template.steps.filter(s => !['flag_route', 'alert', 'dashboard', 'task', 'report'].includes(s.type));
@@ -178,7 +184,7 @@ export default function WorkflowComposer() {
       newNodes.push({
         id: nodeId,
         type: 'processing',
-        position: { x: 290 + i * 220, y: centerY - 30 },
+        position: { x: COL_GAP * 2 + i * COL_GAP, y: centerY - 30 },
         data: { ...meta, label: step.label, config: step.config },
       });
 
@@ -202,7 +208,7 @@ export default function WorkflowComposer() {
     });
 
     const lastProcessingId = processingSteps.length > 0 ? `step-${processingSteps.length - 1}` : sources.length > 0 ? `ds-${sources[0].id}` : 'trigger';
-    const actionStartX = 290 + processingSteps.length * 220;
+    const actionStartX = COL_GAP * 2 + processingSteps.length * COL_GAP;
 
     actions.forEach((action, i) => {
       const nodeId = `action-${i}`;
@@ -222,7 +228,8 @@ export default function WorkflowComposer() {
 
     setNodes(newNodes);
     setEdges(newEdges);
-  }, [setNodes, setEdges]);
+    setTimeout(() => fitView({ padding: 0.25, duration: 400 }), 50);
+  }, [setNodes, setEdges, fitView]);
 
   const handleTemplateSelect = useCallback((template) => {
     setSelectedTemplate(template);
@@ -869,8 +876,9 @@ export default function WorkflowComposer() {
               onNodeClick={handleNodeClick}
               nodeTypes={NODE_TYPES}
               fitView
-              fitViewOptions={{ padding: 0.3 }}
+              fitViewOptions={{ padding: 0.25 }}
               proOptions={{ hideAttribution: true }}
+              minZoom={0.2}
             >
               <Background color="#E5E5E5" gap={24} size={1.5} />
               <Controls
@@ -918,6 +926,14 @@ export default function WorkflowComposer() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function WorkflowComposer() {
+  return (
+    <ReactFlowProvider>
+      <WorkflowComposerInner />
+    </ReactFlowProvider>
   );
 }
 
