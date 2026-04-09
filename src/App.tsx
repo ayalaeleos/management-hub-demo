@@ -5,6 +5,7 @@ import { UsersPage } from './pages/Users/UsersPage';
 import { SitesPage } from './pages/Sites/SitesPage';
 import { LeadershipReport } from './pages/Reports/LeadershipReport';
 import { ComplianceReport } from './pages/Reports/ComplianceReport';
+import { EligibilityReport } from './pages/Reports/EligibilityReport';
 import './styles/globals.css';
 import './styles/workflow-utils.css';
 import './App.css';
@@ -27,6 +28,7 @@ function AppContent() {
           <Route path="/sites" element={<SitesPage />} />
           <Route path="/leadership-report" element={<LeadershipReport />} />
           <Route path="/compliance-report" element={<ComplianceReport />} />
+          <Route path="/eligibility-report" element={<EligibilityReport />} />
           <Route path="/workflows" element={<WorkflowsLanding />} />
           <Route path="/workflows/new" element={<WorkflowComposer />} />
           <Route path="/workflows/:id" element={<WorkflowDetail />} />

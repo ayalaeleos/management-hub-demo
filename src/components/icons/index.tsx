@@ -140,6 +140,16 @@ export function UserPlusIcon({ size = 20, color = 'currentColor', className }: I
   );
 }
 
+export function ClipboardListIcon({ size = 16, color = 'currentColor', className }: IconProps) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
+      <rect x="4" y="3" width="12" height="15" rx="1.5" stroke={color} strokeWidth="1.5"/>
+      <path d="M7.5 3.5V5h5V3.5" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M7 9h6M7 12h6M7 15h4" stroke={color} strokeWidth="1.4" strokeLinecap="round"/>
+    </svg>
+  );
+}
+
 export function EleosLogoMark({ size = 40 }: { size?: number }) {
   const w = size * (40.875 / 39.9922);
   return (

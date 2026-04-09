@@ -4,6 +4,7 @@ import {
   BriefcaseIcon,
   FileCheckIcon,
   ShieldCheckIcon,
+  ClipboardListIcon,
   BuildingIcon,
   UsersGroupIcon,
   ChevronDownIcon,
@@ -56,6 +57,12 @@ const navItems: NavItem[] = [
     icon: <ShieldCheckIcon color="white" />,
     path: '/compliance-report',
   },
+  {
+    id: 'eligibility',
+    label: 'Eligibility Report',
+    icon: <ClipboardListIcon size={20} color="white" />,
+    path: '/eligibility-report',
+  },
 ];
 
 export function Sidebar() {
@@ -64,7 +71,7 @@ export function Sidebar() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const COLLAPSED_PREFIXES = ['/leadership-report', '/compliance-report', '/workflows'];
+  const COLLAPSED_PREFIXES = ['/leadership-report', '/compliance-report', '/eligibility-report', '/workflows'];
 
   useEffect(() => {
     if (COLLAPSED_PREFIXES.some(prefix => location.pathname.startsWith(prefix))) {

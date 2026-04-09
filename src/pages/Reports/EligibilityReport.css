@@ -1,0 +1,72 @@
+.eligibility-report {
+  padding: 24px 32px;
+  min-height: 100%;
+  background: var(--color-bg-secondary);
+}
+
+.eligibility-report__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 32px;
+  background: white;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 16px 24px;
+}
+
+.eligibility-report__header-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.eligibility-report__title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
+.eligibility-report__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: #fef3c7;
+  color: #92400e;
+  border-radius: 20px;
+  padding: 3px 10px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.eligibility-report__empty {
+  background: white;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 80px 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 16px;
+}
+
+.eligibility-report__empty-icon {
+  opacity: 0.5;
+}
+
+.eligibility-report__empty-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
+.eligibility-report__empty-body {
+  font-size: 14px;
+  color: var(--color-text-secondary);
+  max-width: 480px;
+  line-height: 1.6;
+  margin: 0;
+}
