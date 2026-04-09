@@ -1,0 +1,68 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-serif: 'Inter', system-ui, sans-serif;
+
+  --color-hub-primary: #171717;
+  --color-hub-primary-light: #F5F5F5;
+  --color-hub-border: #E5E5E5;
+  --color-hub-bg: #FFFFFF;
+  --color-hub-sidebar: #FAFAFA;
+  --color-hub-text: #171717;
+  --color-hub-text-secondary: #737373;
+  --color-hub-text-muted: #A3A3A3;
+  
+  --color-hub-success: #10B981;
+  --color-hub-warning: #F59E0B;
+  --color-hub-danger: #EF4444;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', system-ui, sans-serif;
+  color: var(--color-hub-text);
+  background: var(--color-hub-sidebar);
+}
+
+h1, h2, h3, h4 {
+  font-family: 'Inter', system-ui, sans-serif;
+  letter-spacing: -0.02em;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #E5E5E5;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #D4D4D4;
+}
+
+/* Sleek button styles */
+.btn-primary {
+  @apply bg-[#171717] text-white hover:bg-[#262626] transition-all duration-200 shadow-sm border border-transparent;
+}
+.btn-secondary {
+  @apply bg-white text-[#171717] border border-[#E5E5E5] hover:bg-[#FAFAFA] transition-all duration-200 shadow-sm;
+}
+.btn-ghost {
+  @apply bg-transparent text-[#737373] hover:text-[#171717] hover:bg-[#F5F5F5] transition-all duration-200;
+}
+
+/* Glassmorphism utilities */
+.glass-panel {
+  @apply bg-white/80 backdrop-blur-md border-b border-[#E5E5E5]/80;
+}

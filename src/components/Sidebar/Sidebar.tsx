@@ -20,6 +20,14 @@ interface NavItem {
   children?: { id: string; label: string; path: string; icon: React.ReactNode }[];
 }
 
+function WorkflowIcon({ color = 'white' }: { color?: string }) {
+  return (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+    </svg>
+  );
+}
+
 const navItems: NavItem[] = [
   {
     id: 'my-org',
@@ -29,6 +37,12 @@ const navItems: NavItem[] = [
       { id: 'users', label: 'Users', path: '/users', icon: <UsersGroupIcon color="white" /> },
       { id: 'sites', label: 'Sites', path: '/sites', icon: <BuildingIcon color="white" /> },
     ],
+  },
+  {
+    id: 'workflows',
+    label: 'Workflows',
+    icon: <WorkflowIcon color="white" />,
+    path: '/workflows',
   },
   {
     id: 'leadership',
@@ -50,7 +64,7 @@ export function Sidebar() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const REPORT_PATHS = ['/leadership-report', '/compliance-report'];
+  const REPORT_PATHS = ['/leadership-report', '/compliance-report', '/workflows'];
 
   useEffect(() => {
     if (REPORT_PATHS.includes(location.pathname)) {
