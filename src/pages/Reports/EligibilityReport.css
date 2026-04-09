@@ -1166,3 +1166,267 @@
 .er-coding-code-box--new .er-coding-code-box__code {
   color: #16a34a;
 }
+
+/* ── Revenue Integrity Section ── */
+.ri-section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.ri-section__title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #0f172a;
+  margin: 0;
+}
+
+.ri-section-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.ri-section-header__left {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.ri-section-subtitle {
+  font-size: 13px;
+  color: #64748b;
+  margin: 0;
+}
+
+.ri-section-header__right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+}
+
+.ri-section-header__buttons {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.ri-signal-select {
+  font-size: 13px;
+  font-family: 'Poppins', sans-serif;
+  padding: 6px 10px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  background: white;
+  color: #0f172a;
+  cursor: pointer;
+}
+
+.ri-simulate-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: 'Poppins', sans-serif;
+  background: #2d4ccd;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 7px 14px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.ri-simulate-btn:hover {
+  background: #293d87;
+}
+
+.ri-last-updated {
+  font-size: 11px;
+  color: #94a3b8;
+}
+
+/* KPI cards */
+.ri-stats-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.ri-stat-card {
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-height: 140px;
+}
+
+.ri-stat-card__label {
+  font-size: 11px;
+  font-weight: 600;
+  color: #94a3b8;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.ri-stat-card__value {
+  font-size: 28px;
+  font-weight: 600;
+  color: #0f172a;
+  line-height: 1;
+}
+
+.ri-stat-card__subtext {
+  font-size: 12px;
+  color: #64748b;
+  margin-top: auto;
+}
+
+.ri-stat-card__subtext--orange {
+  color: #ea580c;
+}
+
+.ri-badge {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 100px;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 8px;
+  width: fit-content;
+}
+
+.ri-badge--green {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+/* Charts row */
+.ri-charts-row {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 16px;
+}
+
+.ri-chart-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.ri-card-subtitle {
+  font-size: 12px;
+  color: #64748b;
+  margin: 2px 0 0;
+  font-weight: 400;
+}
+
+/* Toggle group */
+.ri-toggle-group {
+  display: flex;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  overflow: hidden;
+  width: fit-content;
+  margin-bottom: 16px;
+}
+
+.ri-toggle-btn {
+  font-size: 12px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  padding: 5px 12px;
+  background: white;
+  border: none;
+  border-right: 1px solid #e2e8f0;
+  cursor: pointer;
+  color: #64748b;
+  transition: background 0.15s, color 0.15s;
+}
+
+.ri-toggle-btn:last-child {
+  border-right: none;
+}
+
+.ri-toggle-btn--active {
+  background: #2d4ccd;
+  color: white;
+}
+
+/* Horizontal bar chart */
+.ri-bar-chart {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.ri-bar-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.ri-bar-label {
+  font-size: 12px;
+  color: #0f172a;
+  min-width: 170px;
+  flex-shrink: 0;
+}
+
+.ri-bar-track {
+  flex: 1;
+  height: 10px;
+  background: #f1f5f9;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.ri-bar-fill {
+  height: 100%;
+  border-radius: 6px;
+}
+
+.ri-bar-pct {
+  font-size: 12px;
+  font-weight: 600;
+  color: #64748b;
+  min-width: 36px;
+  text-align: right;
+}
+
+/* Donut + legend */
+.ri-donut-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.ri-donut-legend {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+.ri-donut-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: #0f172a;
+  line-height: 1.4;
+}
+
+.ri-donut-legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}

@@ -530,6 +530,152 @@ function ClinicianView({
   );
 }
 
+// ─── Revenue Integrity Section ────────────────────────────────────────────────
+
+const RI_BAR_DATA = [
+  { label: 'Psychotherapy (CPT)', pct: 85, color: '#7c3aed' },
+  { label: 'Skills Training (H2014)', pct: 62, color: '#16a34a' },
+  { label: 'Case Mgmt (T1016)', pct: 44, color: '#ea580c' },
+  { label: 'Crisis (H2011)', pct: 28, color: '#db2777' },
+];
+
+const RI_DONUT_SLICES = [
+  { label: 'Time-Based Undercoding', value: 35, color: '#7c3aed' },
+  { label: 'Missing Add-On Codes', value: 25, color: '#16a34a' },
+  { label: 'Auth Mismatches', value: 20, color: '#db2777' },
+  { label: 'Modifier Errors', value: 20, color: '#ea580c' },
+];
+
+const RI_TOGGLE_OPTIONS = ['Service', 'Clinician', 'Site'];
+
+function RevenueIntegrityBarChart({ data }: { data: typeof RI_BAR_DATA }) {
+  return (
+    <div className="ri-bar-chart">
+      {data.map((item, i) => (
+        <div key={i} className="ri-bar-row">
+          <span className="ri-bar-label">{item.label}</span>
+          <div className="ri-bar-track">
+            <div className="ri-bar-fill" style={{ width: `${item.pct}%`, background: item.color }} />
+          </div>
+          <span className="ri-bar-pct">{item.pct}%</span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function RevenueIntegrityDonut() {
+  const r = 54, cx = 80, cy = 80, strokeW = 22;
+  const circumference = 2 * Math.PI * r;
+  const sum = RI_DONUT_SLICES.reduce((a, s) => a + s.value, 0);
+  let cumulative = 0;
+
+  return (
+    <div className="ri-donut-container">
+      <svg width={160} height={160} viewBox="0 0 160 160">
+        {RI_DONUT_SLICES.map((s, i) => {
+          const dash = (s.value / sum) * circumference;
+          const gap = circumference - dash;
+          const rotation = -90 + (cumulative / sum) * 360;
+          cumulative += s.value;
+          return (
+            <circle key={i} cx={cx} cy={cy} r={r} fill="none"
+              stroke={s.color} strokeWidth={strokeW}
+              strokeDasharray={`${dash} ${gap}`}
+              transform={`rotate(${rotation} ${cx} ${cy})`}
+            />
+          );
+        })}
+        <text x={cx} y={cy - 7} textAnchor="middle" fontSize={16} fontWeight={600} fill="#0f172a" fontFamily="Poppins, sans-serif">842</text>
+        <text x={cx} y={cy + 11} textAnchor="middle" fontSize={10} fill="#64748b" fontFamily="Poppins, sans-serif">Encounters</text>
+      </svg>
+      <div className="ri-donut-legend">
+        {RI_DONUT_SLICES.map((s, i) => (
+          <div key={i} className="ri-donut-legend-item">
+            <div className="ri-donut-legend-dot" style={{ background: s.color }} />
+            <span>{s.label} — {s.value}%</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function RevenueIntegritySection() {
+  const [toggle, setToggle] = useState('Service');
+
+  return (
+    <div className="ri-section">
+      {/* Header */}
+      <div className="ri-section-header">
+        <div className="ri-section-header__left">
+          <h2 className="ri-section__title">Revenue Integrity</h2>
+          <p className="ri-section-subtitle">AI-driven coding analysis and opportunities.</p>
+        </div>
+        <span className="ri-last-updated">Last updated: Just now</span>
+      </div>
+
+      {/* KPI Stat Cards */}
+      <div className="ri-stats-row">
+        <div className="ri-stat-card">
+          <span className="ri-stat-card__label">TOTAL REVENUE UPLIFT</span>
+          <span className="ri-stat-card__value">$142,850</span>
+          <span className="ri-badge ri-badge--green">+12% MoM</span>
+          <span className="ri-stat-card__subtext">Identified monthly revenue lift</span>
+        </div>
+        <div className="ri-stat-card">
+          <span className="ri-stat-card__label">UNDERCODED ENCOUNTERS</span>
+          <span className="ri-stat-card__value">842</span>
+          <span className="ri-stat-card__subtext ri-stat-card__subtext--orange">Billable units missed</span>
+        </div>
+        <div className="ri-stat-card">
+          <span className="ri-stat-card__label">AVG LIFT / ENCOUNTER</span>
+          <span className="ri-stat-card__value">$28.50</span>
+          <span className="ri-stat-card__subtext">Across identified opportunities</span>
+        </div>
+      </div>
+
+      {/* Charts row */}
+      <div className="ri-charts-row">
+        <div className="er-card ri-chart-card">
+          <div className="er-card__header">
+            <div>
+              <h3 className="er-card__title">Revenue Opportunity Distribution</h3>
+              <p className="ri-card-subtitle">Concentration of uplift by service</p>
+            </div>
+          </div>
+          <div style={{ padding: '0 20px 4px' }}>
+            <div className="ri-toggle-group">
+              {RI_TOGGLE_OPTIONS.map(opt => (
+                <button
+                  key={opt}
+                  className={`ri-toggle-btn${toggle === opt ? ' ri-toggle-btn--active' : ''}`}
+                  onClick={() => setToggle(opt)}
+                >{opt}</button>
+              ))}
+            </div>
+          </div>
+          <div style={{ padding: '0 20px 20px' }}>
+            <RevenueIntegrityBarChart data={RI_BAR_DATA} />
+          </div>
+        </div>
+
+        <div className="er-card ri-chart-card">
+          <div className="er-card__header">
+            <div>
+              <h3 className="er-card__title">Opportunity Type</h3>
+              <p className="ri-card-subtitle">Drivers of revenue capture</p>
+            </div>
+          </div>
+          <div style={{ padding: '0 20px 20px' }}>
+            <RevenueIntegrityDonut />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function CodingIntegrityView() {
   const [filter, setFilter] = useState<string>('All');
   const [modalOpp, setModalOpp] = useState<CodingOpp | null>(null);
@@ -551,11 +697,6 @@ function CodingIntegrityView() {
         <div className="er-coding-summary__item">
           <span className="er-coding-summary__num er-coding-summary__num--green">$127k</span>
           <span className="er-coding-summary__label">Potential revenue recovery</span>
-        </div>
-        <div className="er-coding-summary__sep" />
-        <div className="er-coding-summary__item">
-          <span className="er-coding-summary__num er-coding-summary__num--purple">AI</span>
-          <span className="er-coding-summary__label">Powered by Eleos session analysis</span>
         </div>
       </div>
 
@@ -663,6 +804,7 @@ function CodingIntegrityView() {
           </div>
         </div>
       )}
+      <RevenueIntegritySection />
     </div>
   );
 }
