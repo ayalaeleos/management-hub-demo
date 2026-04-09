@@ -2,20 +2,20 @@ import React, { useState, useSyncExternalStore } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { DEMO_WORKFLOWS, DEMO_FLAGS, DATA_SOURCES, TRIGGER_TYPES, ACTION_TYPES, PRODUCT_CATEGORIES } from '../../data/mockData.js';
 import { findWorkflow, findFlagsForWorkflow, subscribe, getCreatedWorkflows } from '../../data/workflowStore.js';
-import { Icon, ProductLogo } from '../../components/Icons.jsx';
+import { Icon, ProductLogo } from '../../components/WorkflowIcons.jsx';
 
 const SEVERITY_CONFIG = {
-  critical: { label: 'Critical', bg: '#FEF2F2', color: '#DC2626', dot: '#DC2626' },
-  high: { label: 'High', bg: '#FFF7ED', color: '#EA580C', dot: '#EA580C' },
-  medium: { label: 'Medium', bg: '#FFFBEB', color: '#D97706', dot: '#D97706' },
-  low: { label: 'Low', bg: '#F0FDF4', color: '#16A34A', dot: '#16A34A' },
+  critical: { label: 'Critical', bg: '#ffebee', color: '#c62828', dot: '#c62828' },
+  high: { label: 'High', bg: '#fff3e0', color: '#e65100', dot: '#e65100' },
+  medium: { label: 'Medium', bg: '#fff3e0', color: '#e65100', dot: '#e65100' },
+  low: { label: 'Low', bg: '#e8f5e9', color: '#2e7d32', dot: '#2e7d32' },
 };
 
 const STATUS_CONFIG = {
-  unreviewed: { label: 'Unreviewed', bg: '#FEF2F2', color: '#DC2626' },
-  reviewed: { label: 'Reviewed', bg: '#F0FDF4', color: '#16A34A' },
-  dismissed: { label: 'Dismissed', bg: '#F5F5F5', color: '#737373' },
-  sent_to_clinician: { label: 'Sent to Clinician', bg: '#FAFAFA', color: '#171717', border: '#E5E5E5' },
+  unreviewed: { label: 'Unreviewed', bg: '#ffebee', color: '#c62828' },
+  reviewed: { label: 'Reviewed', bg: '#e8f5e9', color: '#2e7d32' },
+  dismissed: { label: 'Dismissed', bg: '#f5f5f5', color: 'rgba(33,33,33,0.6)' },
+  sent_to_clinician: { label: 'Sent to Clinician', bg: '#fafafa', color: '#212121', border: '#eeeeee' },
 };
 
 export default function WorkflowDetail() {
@@ -69,7 +69,7 @@ export default function WorkflowDetail() {
 
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-3">
-            <div className="w-2.5 h-2.5 rounded-full bg-[#10B981] shadow-[0_0_0_2px_rgba(16,185,129,0.2)]" />
+            <div className="w-2.5 h-2.5 rounded-full bg-[#10B981] shadow-[0_0_0_2px_rgba(46,125,50,0.2)]" />
             <h1 className="text-xl font-semibold text-[#171717] tracking-tight">
               {workflow.name}
             </h1>
@@ -79,7 +79,7 @@ export default function WorkflowDetail() {
                 {productCategory.name}
               </span>
             )}
-            <span className="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-[#ECFDF5] text-[#059669] uppercase tracking-widest">
+            <span className="text-[11px] font-semibold px-2 py-0.5 rounded-full uppercase tracking-widest" style={{ background: '#e8f5e9', color: '#2e7d32' }}>
               Active
             </span>
           </div>
@@ -120,7 +120,7 @@ export default function WorkflowDetail() {
           {workflow.actions?.map((action, i) => {
             const actionMeta = ACTION_TYPES.find(a => a.id === action.type);
             return actionMeta ? (
-              <span key={i} className="flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-semibold bg-[#171717] text-white">
+              <span key={i} className="flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-semibold bg-[#2d4ccd] text-white">
                 <Icon name={actionMeta.icon} className="w-3.5 h-3.5" />
                 {actionMeta.label}
               </span>
@@ -134,9 +134,9 @@ export default function WorkflowDetail() {
       {/* Metrics */}
       <div className="px-8 py-5 grid grid-cols-5 gap-4 border-b border-[#E5E5E5] bg-[#FAFAFA]">
         <MetricCard label="Notes Scanned" value={workflow.stats.scanned.toLocaleString()} />
-        <MetricCard label="Flagged" value={workflow.stats.flagged.toLocaleString()} subValue={`${workflow.stats.flagRate}%`} color="#F59E0B" />
-        <MetricCard label="Critical" value={workflow.stats.critical.toString()} color="#DC2626" />
-        <MetricCard label="Pass Rate" value={`${(100 - workflow.stats.flagRate).toFixed(1)}%`} color="#10B981" />
+        <MetricCard label="Flagged" value={workflow.stats.flagged.toLocaleString()} subValue={`${workflow.stats.flagRate}%`} color="#e65100" />
+        <MetricCard label="Critical" value={workflow.stats.critical.toString()} color="#c62828" />
+        <MetricCard label="Pass Rate" value={`${(100 - workflow.stats.flagRate).toFixed(1)}%`} color="#2e7d32" />
         <MetricCard label="Avg. Review Time" value="4.2 hrs" />
       </div>
 
@@ -160,14 +160,14 @@ export default function WorkflowDetail() {
                 {t.label}
                 {t.count != null && t.count > 0 && (
                   <span className={`text-[10px] font-semibold px-1.5 py-0.5 rounded-full ${
-                    tab === t.id ? 'bg-[#171717] text-white' : 'bg-[#F5F5F5] text-[#737373]'
+                    tab === t.id ? 'bg-[#2d4ccd] text-white' : 'bg-[#F5F5F5] text-[#737373]'
                   }`}>
                     {t.count}
                   </span>
                 )}
               </span>
               {tab === t.id && (
-                <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#171717] rounded-t-full" />
+                <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#2d4ccd] rounded-t-full" />
               )}
             </button>
           ))}
@@ -183,7 +183,7 @@ export default function WorkflowDetail() {
                 <select
                   value={filterStatus}
                   onChange={(e) => setFilterStatus(e.target.value)}
-                  className="px-3 py-1.5 bg-white border border-[#E5E5E5] rounded-lg text-xs font-medium text-[#171717] outline-none focus:border-[#171717] shadow-sm"
+                  className="px-3 py-1.5 bg-white border border-[#E5E5E5] rounded-lg text-xs font-medium text-[#171717] outline-none focus:border-[#2d4ccd] shadow-sm"
                 >
                   <option value="unreviewed">Unreviewed Queue</option>
                   <option value="reviewed">Reviewed</option>
@@ -194,7 +194,7 @@ export default function WorkflowDetail() {
                 <select
                   value={filterSeverity}
                   onChange={(e) => setFilterSeverity(e.target.value)}
-                  className="px-3 py-1.5 bg-white border border-[#E5E5E5] rounded-lg text-xs font-medium text-[#171717] outline-none focus:border-[#171717] shadow-sm"
+                  className="px-3 py-1.5 bg-white border border-[#E5E5E5] rounded-lg text-xs font-medium text-[#171717] outline-none focus:border-[#2d4ccd] shadow-sm"
                 >
                   <option value="all">All Severities</option>
                   <option value="critical">Critical</option>
@@ -208,7 +208,7 @@ export default function WorkflowDetail() {
                 {filteredFlags.length === 0 ? (
                   <div className="flex flex-col items-center justify-center h-full text-center p-8">
                     <div className="w-12 h-12 rounded-full bg-[#FAFAFA] border border-[#E5E5E5] flex items-center justify-center mb-4">
-                      <Icon name="check-circle" className="w-6 h-6 text-[#10B981]" />
+                      <Icon name="check-circle" className="w-6 h-6" style={{ color: '#2e7d32' }} />
                     </div>
                     <p className="text-[15px] font-semibold text-[#171717]">Inbox Zero</p>
                     <p className="text-sm text-[#737373] mt-1">No flags matching these filters.</p>
@@ -287,7 +287,7 @@ function ConfigurationTab({ workflow, navigate, id }) {
               const actionMeta = ACTION_TYPES.find(a => a.id === action.type);
               return actionMeta ? (
                 <div key={i} className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-lg bg-[#171717] flex items-center justify-center">
+                  <div className="w-10 h-10 rounded-lg bg-[#2d4ccd] flex items-center justify-center">
                     <Icon name={actionMeta.icon} className="w-5 h-5 text-white" />
                   </div>
                   <div>
@@ -343,7 +343,7 @@ function ConfigurationTab({ workflow, navigate, id }) {
   );
 }
 
-function MetricCard({ label, value, subValue, color = '#171717' }) {
+function MetricCard({ label, value, subValue, color = '#212121' }) {
   return (
     <div className="p-4 rounded-xl bg-white border border-[#E5E5E5] shadow-sm">
       <p className="text-xs font-semibold uppercase tracking-widest text-[#A3A3A3] mb-1.5">{label}</p>
@@ -469,7 +469,7 @@ function FlagDetailPanel({ flag, onClose, onAction }) {
       <div className="px-8 py-3.5 border-t border-[#E5E5E5] bg-white flex gap-2.5 shrink-0">
         <button
           onClick={() => onAction(flag.id, 'reviewed')}
-          className="flex-1 py-2.5 rounded-xl text-sm font-semibold bg-[#171717] text-white hover:bg-[#262626] transition-all"
+          className="flex-1 py-2.5 rounded-xl text-sm font-semibold bg-[#2d4ccd] text-white hover:bg-[#293d87] transition-all"
         >
           Mark Reviewed
         </button>
@@ -507,7 +507,7 @@ function AnalyticsTab({ workflow }) {
             {days.map((d, i) => (
               <div key={i} className="flex-1 flex flex-col items-center gap-2 group">
                 <div
-                  className="w-full rounded-t-md transition-all bg-[#E5E5E5] group-hover:bg-[#171717]"
+                  className="w-full rounded-t-md transition-all bg-[#E5E5E5] group-hover:bg-[#2d4ccd]"
                   style={{ height: `${(d.flags / maxFlags) * 100}%`, minHeight: 4 }}
                   title={`${d.flags} flags`}
                 />
@@ -542,7 +542,7 @@ function AnalyticsTab({ workflow }) {
                   <td className="px-6 py-3.5 font-medium text-[#171717]">{c.name}</td>
                   <td className="px-6 py-3.5 text-right font-semibold text-[#171717]">{c.flags}</td>
                   <td className="px-6 py-3.5 text-right text-[#737373]">{c.rate}</td>
-                  <td className="px-6 py-3.5 text-right font-semibold" style={{ color: c.critical > 0 ? '#DC2626' : '#737373' }}>{c.critical}</td>
+                  <td className="px-6 py-3.5 text-right font-semibold" style={{ color: c.critical > 0 ? '#c62828' : 'rgba(33,33,33,0.6)' }}>{c.critical}</td>
                 </tr>
               ))}
             </tbody>
@@ -574,7 +574,7 @@ function ConversationEntry({ role, text }) {
   if (role === 'user') {
     return (
       <div className="flex justify-end">
-        <div className="px-4 py-2.5 rounded-2xl rounded-tr-sm text-[13px] max-w-xl bg-[#171717] text-white leading-relaxed">
+        <div className="px-4 py-2.5 rounded-2xl rounded-tr-sm text-[13px] max-w-xl bg-[#2d4ccd] text-white leading-relaxed">
           {text}
         </div>
       </div>

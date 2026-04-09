@@ -23,7 +23,7 @@ import {
   PRODUCT_CATEGORIES,
 } from '../../data/mockData.js';
 import { addWorkflow } from '../../data/workflowStore.js';
-import { Icon, ProductLogo } from '../../components/Icons.jsx';
+import { Icon, ProductLogo } from '../../components/WorkflowIcons.jsx';
 
 const NODE_TYPES = {
   trigger: TriggerNode,
@@ -45,6 +45,7 @@ export default function WorkflowComposer() {
   const { id } = useParams();
   const location = useLocation();
   const chatEndRef = useRef(null);
+  const chatScrollRef = useRef(null);
   const hasInitialized = useRef(false);
 
   const [workflowName, setWorkflowName] = useState('');
@@ -65,7 +66,9 @@ export default function WorkflowComposer() {
   );
 
   useEffect(() => {
-    chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    if (chatScrollRef.current) {
+      chatScrollRef.current.scrollTop = chatScrollRef.current.scrollHeight;
+    }
   }, [messages, isTyping]);
 
   useEffect(() => {
@@ -431,19 +434,21 @@ export default function WorkflowComposer() {
   }, [collectedConfig, workflowName, selectedTemplate, simulateAIResponse]);
 
   const handleCheckboxToggle = useCallback((optionId) => {
-    setMessages((prev) => {
-      const updated = [...prev];
-      const last = updated[updated.length - 1];
-      if (last?.structured?.type === 'checkbox') {
-        last.structured = {
-          ...last.structured,
-          options: last.structured.options.map((o) =>
-            o.id === optionId ? { ...o, checked: !o.checked } : o
-          ),
-        };
-      }
-      return [...updated];
-    });
+    setMessages((prev) =>
+      prev.map((msg, i) =>
+        i === prev.length - 1 && msg.structured?.type === 'checkbox'
+          ? {
+              ...msg,
+              structured: {
+                ...msg.structured,
+                options: msg.structured.options.map((o) =>
+                  o.id === optionId ? { ...o, checked: !o.checked } : o
+                ),
+              },
+            }
+          : msg
+      )
+    );
   }, []);
 
   const handleConfirmCheckbox = useCallback(() => {
@@ -749,7 +754,7 @@ export default function WorkflowComposer() {
   }, []);
 
   return (
-    <div className="flex flex-col h-screen bg-[#FAFAFA]">
+    <div style={{ display: 'flex', flexDirection: 'column', flex: 1, overflow: 'hidden', background: '#FAFAFA' }}>
       <header className="flex items-center justify-between px-6 h-14 shrink-0 border-b border-[#E5E5E5] bg-white">
         <div className="flex items-center gap-4">
           <button
@@ -775,7 +780,7 @@ export default function WorkflowComposer() {
             disabled={isSimulating || nodes.length === 0}
           >
             {isSimulating ? (
-              <span className="w-3.5 h-3.5 rounded-full border-2 border-[#E5E5E5] border-t-[#171717] animate-spin" />
+              <span className="w-3.5 h-3.5 rounded-full border-2 border-[#E5E5E5] border-t-[#2d4ccd] animate-spin" />
             ) : (
               <Icon name="play" className="w-3.5 h-3.5" />
             )}
@@ -793,10 +798,10 @@ export default function WorkflowComposer() {
         </div>
       </header>
 
-      <div className="flex flex-1 overflow-hidden">
+      <div style={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
         {/* Chat panel */}
-        <div className="w-[440px] shrink-0 border-r border-[#E5E5E5] flex flex-col bg-white z-10">
-          <div className="flex-1 overflow-y-auto p-5 scroll-smooth">
+        <div style={{ width: 440, flexShrink: 0, borderRight: '1px solid #E5E5E5', display: 'flex', flexDirection: 'column', background: 'white', zIndex: 10, height: '100%', overflow: 'hidden' }}>
+          <div ref={chatScrollRef} className="flex-1 overflow-y-auto p-5 scroll-smooth">
             {phase === 'welcome' && messages.length === 0 && (
               <WelcomeState onTemplateSelect={handleTemplateSelect} onBlankCanvas={handleBlankCanvas} />
             )}
@@ -829,22 +834,22 @@ export default function WorkflowComposer() {
             <div ref={chatEndRef} />
           </div>
 
-          <div className="p-3 border-t border-[#E5E5E5] bg-white">
-            <div className="relative flex items-center">
+          <div className="p-3 border-t border-[#E5E5E5] bg-white shrink-0">
+            <div className="flex items-center gap-2">
               <input
                 type="text"
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && handleUserMessage()}
                 placeholder={phase === 'welcome' ? 'Describe what you want to automate...' : 'Refine or ask a question...'}
-                className="w-full pl-4 pr-11 py-3 bg-[#FAFAFA] border border-[#E5E5E5] rounded-xl text-sm outline-none focus:border-[#171717] focus:ring-1 focus:ring-[#171717] transition-all placeholder:text-[#A3A3A3] text-[#171717]"
+                className="flex-1 px-4 py-3 bg-[#FAFAFA] border border-[#E5E5E5] rounded-xl text-sm outline-none focus:border-[#2d4ccd] transition-all placeholder:text-[#A3A3A3] text-[#171717]"
               />
               <button
                 onClick={handleUserMessage}
-                className="absolute right-2 p-1.5 rounded-lg bg-[#171717] text-white hover:bg-[#262626] transition-colors disabled:opacity-30"
+                className="w-10 h-10 flex items-center justify-center rounded-xl bg-[#2d4ccd] text-white hover:bg-[#293d87] transition-colors shrink-0 disabled:opacity-30"
                 disabled={!inputValue.trim()}
               >
-                <Icon name="arrow-right" className="w-3.5 h-3.5" />
+                <Icon name="arrow-right" className="w-4 h-4" />
               </button>
             </div>
           </div>
@@ -922,7 +927,7 @@ function WelcomeState({ onTemplateSelect, onBlankCanvas }) {
   return (
     <div className="mb-6">
       <div className="flex items-start gap-3 mb-6">
-        <div className="w-7 h-7 rounded-full bg-[#171717] flex items-center justify-center text-white shrink-0">
+        <div className="w-7 h-7 rounded-full bg-[#2d4ccd] flex items-center justify-center text-white shrink-0">
           <Icon name="brain" className="w-3.5 h-3.5" />
         </div>
         <div className="pt-0.5">
@@ -982,7 +987,7 @@ function ChatMessage({ message, onStructuredResponse, onCheckboxToggle, onConfir
   if (message.role === 'user') {
     return (
       <div className="flex justify-end mb-5">
-        <div className="px-4 py-2.5 rounded-2xl rounded-tr-sm text-[13px] max-w-[85%] bg-[#171717] text-white leading-relaxed">
+        <div className="px-4 py-2.5 rounded-2xl rounded-tr-sm text-[13px] max-w-[85%] bg-[#2d4ccd] text-white leading-relaxed">
           {message.content}
         </div>
       </div>
@@ -1008,7 +1013,7 @@ function ChatMessage({ message, onStructuredResponse, onCheckboxToggle, onConfir
         )}
 
         {message.examplePreview && message.exampleConfirmed != null && (
-          <div className="mt-3 flex items-center gap-1.5 text-xs font-medium text-[#10B981]">
+          <div className="mt-3 flex items-center gap-1.5 text-xs font-medium" style={{ color: '#2e7d32' }}>
             <Icon name="check-circle" className="w-3.5 h-3.5" />
             {message.exampleConfirmed ? 'Rule confirmed' : 'Rule adjusted'}
           </div>
@@ -1036,7 +1041,7 @@ function ChatMessage({ message, onStructuredResponse, onCheckboxToggle, onConfir
         )}
 
         {message.structured?.answered && (
-          <div className="mt-2 flex items-center gap-1.5 text-xs font-medium text-[#10B981]">
+          <div className="mt-2 flex items-center gap-1.5 text-xs font-medium" style={{ color: '#2e7d32' }}>
             <Icon name="check-circle" className="w-3.5 h-3.5" />
             Answered
           </div>
@@ -1056,16 +1061,16 @@ function ChatMessage({ message, onStructuredResponse, onCheckboxToggle, onConfir
 
 function ExamplePreviewCard({ example, onApprove, onReject }) {
   const severityColors = {
-    'Critical': { bg: '#FEF2F2', color: '#DC2626', dot: '#DC2626' },
-    'High': { bg: '#FFF7ED', color: '#EA580C', dot: '#EA580C' },
-    'Medium': { bg: '#FFFBEB', color: '#D97706', dot: '#D97706' },
-    'Low': { bg: '#F0FDF4', color: '#16A34A', dot: '#16A34A' },
+    'Critical': { bg: '#ffebee', color: '#c62828', dot: '#c62828' },
+    'High': { bg: '#fff3e0', color: '#e65100', dot: '#e65100' },
+    'Medium': { bg: '#fff3e0', color: '#e65100', dot: '#e65100' },
+    'Low': { bg: '#e8f5e9', color: '#2e7d32', dot: '#2e7d32' },
   };
   const sev = severityColors[example.severity] || severityColors['Medium'];
 
   return (
     <div className="mt-4 border border-[#E5E5E5] rounded-xl overflow-hidden bg-white">
-      <div className="px-4 py-3 bg-[#FAFAFA] border-b border-[#E5E5E5] flex items-center justify-between">
+      <div className="px-4 py-3 border-b border-[#E5E5E5] flex items-center justify-between" style={{ background: 'rgba(45,76,205,0.06)' }}>
         <div className="flex items-center gap-2">
           <Icon name="eye" className="w-3.5 h-3.5 text-[#737373]" />
           <span className="text-xs font-semibold text-[#404040] uppercase tracking-wider">Example Flag Preview</span>
@@ -1116,7 +1121,7 @@ function ExamplePreviewCard({ example, onApprove, onReject }) {
         <div className="flex gap-2">
           <button
             onClick={onApprove}
-            className="flex-1 py-2 rounded-lg text-xs font-semibold bg-[#171717] text-white hover:bg-[#262626] transition-colors flex items-center justify-center gap-1.5"
+            className="flex-1 py-2 rounded-lg text-xs font-semibold bg-[#2d4ccd] text-white hover:bg-[#293d87] transition-colors flex items-center justify-center gap-1.5"
           >
             <Icon name="thumbs-up" className="w-3 h-3" />
             Yes, this is right
@@ -1161,16 +1166,16 @@ function RadioPrompt({ question, options, selected, onSelect }) {
             key={opt.id}
             onClick={() => onSelect(opt.id)}
             className={`w-full text-left p-2.5 rounded-lg border transition-all ${
-              selected === opt.id ? 'border-[#171717] bg-white shadow-sm' : 'border-transparent bg-white hover:border-[#E5E5E5]'
+              selected === opt.id ? 'border-[#2d4ccd] bg-white shadow-sm' : 'border-transparent bg-white hover:border-[#E5E5E5]'
             }`}
           >
             <div className="flex items-center gap-2.5">
               <div
                 className={`w-3.5 h-3.5 rounded-full border flex items-center justify-center shrink-0 transition-colors ${
-                  selected === opt.id ? 'border-[#171717]' : 'border-[#A3A3A3]'
+                  selected === opt.id ? 'border-[#2d4ccd]' : 'border-[#A3A3A3]'
                 }`}
               >
-                {selected === opt.id && <div className="w-1.5 h-1.5 rounded-full bg-[#171717]" />}
+                {selected === opt.id && <div className="w-1.5 h-1.5 rounded-full bg-[#2d4ccd]" />}
               </div>
               <div>
                 <p className="text-[13px] font-medium text-[#171717]">{opt.label}</p>
@@ -1194,13 +1199,13 @@ function CheckboxPrompt({ question, options, onToggle, onConfirm }) {
             key={opt.id}
             onClick={() => onToggle(opt.id)}
             className={`w-full text-left p-2.5 rounded-lg border transition-all ${
-              opt.checked ? 'border-[#171717] bg-white shadow-sm' : 'border-transparent bg-white hover:border-[#E5E5E5]'
+              opt.checked ? 'border-[#2d4ccd] bg-white shadow-sm' : 'border-transparent bg-white hover:border-[#E5E5E5]'
             }`}
           >
-            <div className="flex items-center gap-2.5">
+            <div className="flex items-start gap-2.5">
               <div
-                className={`w-3.5 h-3.5 rounded border flex items-center justify-center shrink-0 transition-colors ${
-                  opt.checked ? 'border-[#171717] bg-[#171717]' : 'border-[#A3A3A3] bg-white'
+                className={`w-3.5 h-3.5 rounded border flex items-center justify-center shrink-0 transition-colors mt-0.5 ${
+                  opt.checked ? 'border-[#2d4ccd] bg-[#2d4ccd]' : 'border-[#A3A3A3] bg-white'
                 }`}
               >
                 {opt.checked && (
@@ -1214,7 +1219,7 @@ function CheckboxPrompt({ question, options, onToggle, onConfirm }) {
                   <span className="text-[13px] font-medium text-[#171717]">{opt.label}</span>
                   {opt.priority && (
                     <span className={`text-[9px] font-semibold px-1.5 py-0.5 rounded-full shrink-0 ${
-                      opt.priority.startsWith('Critical') ? 'bg-[#FEF2F2] text-[#DC2626]' : 'bg-[#FFF7ED] text-[#EA580C]'
+                      opt.priority.startsWith('Critical') ? 'bg-[#ffebee] text-[#c62828]' : 'bg-[#fff3e0] text-[#e65100]'
                     }`}>{opt.priority.startsWith('Critical') ? 'Critical' : 'High'}</span>
                   )}
                   {opt.badge && (
@@ -1229,7 +1234,7 @@ function CheckboxPrompt({ question, options, onToggle, onConfirm }) {
       </div>
       <button
         onClick={onConfirm}
-        className="mt-3 w-full py-2 rounded-lg text-xs font-semibold bg-[#171717] text-white hover:bg-[#262626] transition-colors"
+        className="mt-3 w-full py-2 rounded-lg text-xs font-semibold bg-[#2d4ccd] text-white hover:bg-[#293d87] transition-colors"
       >
         Confirm
       </button>
@@ -1250,7 +1255,7 @@ function ConfirmationCard({ summary, onActivate, onKeepRefining }) {
               <div className="mt-1.5 space-y-1">
                 {summary.rules.map((rule, i) => (
                   <div key={i} className="flex items-center gap-2 text-[12px] text-[#404040]">
-                    <Icon name="check-circle" className="w-3 h-3 text-[#10B981] shrink-0" />
+                    <Icon name="check-circle" className="w-3 h-3 shrink-0" style={{ color: '#2e7d32' }} />
                     <span>{rule}</span>
                   </div>
                 ))}
@@ -1274,7 +1279,7 @@ function ConfirmationCard({ summary, onActivate, onKeepRefining }) {
       <div className="p-3 flex flex-col gap-2">
         <button
           onClick={onActivate}
-          className="w-full py-2.5 rounded-lg text-sm font-semibold bg-[#171717] text-white hover:bg-[#262626] transition-colors"
+          className="w-full py-2.5 rounded-lg text-sm font-semibold bg-[#2d4ccd] text-white hover:bg-[#293d87] transition-colors"
         >
           Activate Workflow
         </button>
@@ -1327,8 +1332,8 @@ function CanvasEmptyState() {
 
 function TriggerNode({ data }) {
   return (
-    <div className="px-4 py-3 rounded-xl border-2 border-dashed border-[#A3A3A3] bg-white shadow-sm min-w-[140px] cursor-pointer hover:border-[#171717] transition-all">
-      <Handle type="source" position={Position.Right} style={{ background: '#171717', width: 6, height: 6, border: 'none' }} />
+    <div className="px-4 py-3 rounded-xl border-2 border-dashed border-[#A3A3A3] bg-white shadow-sm min-w-[140px] cursor-pointer hover:border-[#2d4ccd] transition-all">
+      <Handle type="source" position={Position.Right} style={{ background: '#2d4ccd', width: 6, height: 6, border: 'none' }} />
       <div className="flex items-center gap-2.5">
         <div className="w-7 h-7 rounded-lg bg-[#F5F5F5] flex items-center justify-center text-[#171717]">
           <Icon name={data.icon} className="w-3.5 h-3.5" />
@@ -1346,7 +1351,7 @@ function DataSourceNode({ data }) {
   return (
     <div className="px-4 py-3 rounded-xl border border-[#E5E5E5] bg-white shadow-sm min-w-[150px] cursor-pointer hover:border-[#A3A3A3] transition-all">
       <Handle type="target" position={Position.Left} style={{ background: '#A3A3A3', width: 6, height: 6, border: 'none' }} />
-      <Handle type="source" position={Position.Right} style={{ background: '#171717', width: 6, height: 6, border: 'none' }} />
+      <Handle type="source" position={Position.Right} style={{ background: '#2d4ccd', width: 6, height: 6, border: 'none' }} />
       <div className="flex items-center gap-2.5">
         <div className="w-7 h-7 rounded-lg bg-[#FAFAFA] flex items-center justify-center text-[#171717]">
           <Icon name={data.icon} className="w-3.5 h-3.5" />
@@ -1364,7 +1369,7 @@ function ProcessingNode({ data }) {
   return (
     <div className="px-4 py-3 rounded-xl border border-[#E5E5E5] bg-white shadow-sm min-w-[150px] cursor-pointer hover:border-[#A3A3A3] transition-all">
       <Handle type="target" position={Position.Left} style={{ background: '#A3A3A3', width: 6, height: 6, border: 'none' }} />
-      <Handle type="source" position={Position.Right} style={{ background: '#171717', width: 6, height: 6, border: 'none' }} />
+      <Handle type="source" position={Position.Right} style={{ background: '#2d4ccd', width: 6, height: 6, border: 'none' }} />
       <div className="flex items-center gap-2.5">
         <div className="w-7 h-7 rounded-lg bg-[#FAFAFA] flex items-center justify-center text-[#171717]">
           <Icon name={data.icon} className="w-3.5 h-3.5" />
@@ -1380,14 +1385,14 @@ function ProcessingNode({ data }) {
 
 function OutputNode({ data }) {
   return (
-    <div className="px-4 py-3 rounded-xl border border-[#E5E5E5] bg-white shadow-sm min-w-[150px] cursor-pointer hover:border-[#10B981] transition-all">
-      <Handle type="target" position={Position.Left} style={{ background: '#10B981', width: 6, height: 6, border: 'none' }} />
+    <div className="px-4 py-3 rounded-xl border border-[#E5E5E5] bg-white shadow-sm min-w-[150px] cursor-pointer hover:border-[#2e7d32] transition-all">
+      <Handle type="target" position={Position.Left} style={{ background: '#2e7d32', width: 6, height: 6, border: 'none' }} />
       <div className="flex items-center gap-2.5">
-        <div className="w-7 h-7 rounded-lg bg-[#ECFDF5] flex items-center justify-center text-[#10B981]">
+        <div className="w-7 h-7 rounded-lg bg-[#e8f5e9] flex items-center justify-center" style={{ color: '#2e7d32' }}>
           <Icon name={data.icon} className="w-3.5 h-3.5" />
         </div>
         <div>
-          <p className="text-[10px] text-[#10B981] uppercase tracking-wider font-semibold">Output</p>
+          <p className="text-[10px] uppercase tracking-wider font-semibold" style={{ color: '#2e7d32' }}>Output</p>
           <p className="text-[13px] font-semibold text-[#171717]">{data.label}</p>
         </div>
       </div>
@@ -1397,10 +1402,10 @@ function OutputNode({ data }) {
 
 function ActionNode({ data }) {
   return (
-    <div className="px-4 py-3 rounded-xl border-2 border-[#171717] bg-white shadow-sm min-w-[140px] cursor-pointer hover:shadow-md transition-all">
-      <Handle type="target" position={Position.Left} style={{ background: '#171717', width: 6, height: 6, border: 'none' }} />
+    <div className="px-4 py-3 rounded-xl border-2 border-[#2d4ccd] bg-white shadow-sm min-w-[140px] cursor-pointer hover:shadow-md transition-all">
+      <Handle type="target" position={Position.Left} style={{ background: '#2d4ccd', width: 6, height: 6, border: 'none' }} />
       <div className="flex items-center gap-2.5">
-        <div className="w-7 h-7 rounded-lg bg-[#171717] flex items-center justify-center text-white">
+        <div className="w-7 h-7 rounded-lg bg-[#2d4ccd] flex items-center justify-center text-white">
           <Icon name={data.icon} className="w-3.5 h-3.5" />
         </div>
         <div>
@@ -1483,13 +1488,13 @@ function NodeConfigPanel({ node, onClose }) {
           <div className="space-y-3">
             <div>
               <label className="text-[10px] font-semibold uppercase tracking-widest text-[#A3A3A3] block mb-1.5">Trigger Type</label>
-              <select className="w-full px-3 py-2 bg-white border border-[#E5E5E5] rounded-lg text-[13px] text-[#171717] outline-none focus:border-[#171717]">
+              <select className="w-full px-3 py-2 bg-white border border-[#E5E5E5] rounded-lg text-[13px] text-[#171717] outline-none focus:border-[#2d4ccd]">
                 {TRIGGER_TYPES.map(t => <option key={t.id} value={t.id}>{t.label}</option>)}
               </select>
             </div>
             <div>
               <label className="text-[10px] font-semibold uppercase tracking-widest text-[#A3A3A3] block mb-1.5">Schedule</label>
-              <select className="w-full px-3 py-2 bg-white border border-[#E5E5E5] rounded-lg text-[13px] text-[#171717] outline-none focus:border-[#171717]">
+              <select className="w-full px-3 py-2 bg-white border border-[#E5E5E5] rounded-lg text-[13px] text-[#171717] outline-none focus:border-[#2d4ccd]">
                 <option>On note submit</option>
                 <option>6:00 AM daily</option>
                 <option>Monday 7:00 AM</option>
@@ -1502,7 +1507,7 @@ function NodeConfigPanel({ node, onClose }) {
           <div className="space-y-3">
             <div>
               <label className="text-[10px] font-semibold uppercase tracking-widest text-[#A3A3A3] block mb-1.5">Date Range</label>
-              <select className="w-full px-3 py-2 bg-white border border-[#E5E5E5] rounded-lg text-[13px] text-[#171717] outline-none focus:border-[#171717]">
+              <select className="w-full px-3 py-2 bg-white border border-[#E5E5E5] rounded-lg text-[13px] text-[#171717] outline-none focus:border-[#2d4ccd]">
                 <option>Last 30 days</option>
                 <option>Last 90 days</option>
                 <option>All time</option>
@@ -1510,7 +1515,7 @@ function NodeConfigPanel({ node, onClose }) {
             </div>
             <div>
               <label className="text-[10px] font-semibold uppercase tracking-widest text-[#A3A3A3] block mb-1.5">Program Filter</label>
-              <select className="w-full px-3 py-2 bg-white border border-[#E5E5E5] rounded-lg text-[13px] text-[#171717] outline-none focus:border-[#171717]">
+              <select className="w-full px-3 py-2 bg-white border border-[#E5E5E5] rounded-lg text-[13px] text-[#171717] outline-none focus:border-[#2d4ccd]">
                 <option>All Programs</option>
                 <option>Adult Outpatient</option>
                 <option>Child & Adolescent</option>
@@ -1523,7 +1528,7 @@ function NodeConfigPanel({ node, onClose }) {
           <div className="space-y-3">
             <div>
               <label className="text-[10px] font-semibold uppercase tracking-widest text-[#A3A3A3] block mb-1.5">Sensitivity</label>
-              <input type="range" min="1" max="100" defaultValue="70" className="w-full accent-[#171717]" />
+              <input type="range" min="1" max="100" defaultValue="70" className="w-full accent-[#2d4ccd]" />
               <div className="flex justify-between text-[10px] text-[#737373] mt-1">
                 <span>Low</span><span>High</span>
               </div>
@@ -1534,7 +1539,7 @@ function NodeConfigPanel({ node, onClose }) {
           <div className="space-y-3">
             <div>
               <label className="text-[10px] font-semibold uppercase tracking-widest text-[#A3A3A3] block mb-1.5">Route To</label>
-              <select className="w-full px-3 py-2 bg-white border border-[#E5E5E5] rounded-lg text-[13px] text-[#171717] outline-none focus:border-[#171717]">
+              <select className="w-full px-3 py-2 bg-white border border-[#E5E5E5] rounded-lg text-[13px] text-[#171717] outline-none focus:border-[#2d4ccd]">
                 <option>Direct Supervisor</option>
                 <option>Workflow Owner</option>
                 <option>QA Team (Round-robin)</option>
@@ -1542,7 +1547,7 @@ function NodeConfigPanel({ node, onClose }) {
             </div>
             <div>
               <label className="text-[10px] font-semibold uppercase tracking-widest text-[#A3A3A3] block mb-1.5">Notification</label>
-              <select className="w-full px-3 py-2 bg-white border border-[#E5E5E5] rounded-lg text-[13px] text-[#171717] outline-none focus:border-[#171717]">
+              <select className="w-full px-3 py-2 bg-white border border-[#E5E5E5] rounded-lg text-[13px] text-[#171717] outline-none focus:border-[#2d4ccd]">
                 <option>In-app + Email</option>
                 <option>In-app only</option>
                 <option>Email digest (daily)</option>

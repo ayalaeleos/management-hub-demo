@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useSyncExternalStore } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { DEMO_WORKFLOWS, DATA_SOURCES, TRIGGER_TYPES, ACTION_TYPES, WORKFLOW_TEMPLATES, PRODUCT_CATEGORIES } from '../../data/mockData.js';
 import { subscribe, getCreatedWorkflows } from '../../data/workflowStore.js';
-import { Icon, ProductLogo } from '../../components/Icons.jsx';
+import { Icon, ProductLogo } from '../../components/WorkflowIcons.jsx';
 
 export default function WorkflowsLanding() {
   const navigate = useNavigate();
@@ -142,7 +142,7 @@ function WorkflowCard({ workflow, onClick }) {
         <div className="flex items-start gap-4 flex-1 min-w-0">
           <div className="mt-1.5 shrink-0">
             {workflow.status === 'active' ? (
-              <div className="w-2.5 h-2.5 rounded-full bg-[#10B981] shadow-[0_0_0_2px_rgba(16,185,129,0.2)]" />
+              <div className="w-2.5 h-2.5 rounded-full bg-[#2e7d32] shadow-[0_0_0_2px_rgba(46,125,50,0.2)]" />
             ) : (
               <div className="w-2.5 h-2.5 rounded-full bg-[#A3A3A3]" />
             )}
@@ -192,7 +192,7 @@ function WorkflowCard({ workflow, onClick }) {
                   {workflow.actions.map((action, i) => {
                     const actionMeta = ACTION_TYPES.find(a => a.id === action.type);
                     return actionMeta ? (
-                      <span key={i} className="flex items-center gap-1 text-[11px] font-medium px-2 py-0.5 rounded-md bg-[#171717] text-white">
+                      <span key={i} className="flex items-center gap-1 text-[11px] font-medium px-2 py-0.5 rounded-md bg-[#2d4ccd] text-white">
                         <Icon name={actionMeta.icon} className="w-3 h-3" />
                         {actionMeta.label}
                       </span>
@@ -213,13 +213,13 @@ function WorkflowCard({ workflow, onClick }) {
             <div className="text-right">
               <p className="text-xs font-medium text-[#A3A3A3] uppercase tracking-wider mb-0.5">Flagged</p>
               <div className="flex items-baseline gap-1.5 justify-end">
-                <p className="text-[15px] font-semibold text-[#F59E0B]">{workflow.stats.flagged.toLocaleString()}</p>
+                <p className="text-[15px] font-semibold" style={{ color: '#e65100' }}>{workflow.stats.flagged.toLocaleString()}</p>
                 <p className="text-[11px] font-medium text-[#737373]">({workflow.stats.flagRate}%)</p>
               </div>
             </div>
             <div className="text-right hidden sm:block">
               <p className="text-xs font-medium text-[#A3A3A3] uppercase tracking-wider mb-0.5">Pass Rate</p>
-              <p className="text-[15px] font-semibold text-[#10B981]">{passRate.toFixed(1)}%</p>
+              <p className="text-[15px] font-semibold" style={{ color: '#2e7d32' }}>{passRate.toFixed(1)}%</p>
             </div>
           </div>
         )}

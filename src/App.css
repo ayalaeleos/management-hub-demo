@@ -28,3 +28,9 @@
   overflow-y: auto;
   background: var(--color-grey-50);
 }
+
+.app-content--full-height {
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}

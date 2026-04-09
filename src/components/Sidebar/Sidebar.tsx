@@ -64,10 +64,10 @@ export function Sidebar() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const REPORT_PATHS = ['/leadership-report', '/compliance-report', '/workflows'];
+  const COLLAPSED_PREFIXES = ['/leadership-report', '/compliance-report', '/workflows'];
 
   useEffect(() => {
-    if (REPORT_PATHS.includes(location.pathname)) {
+    if (COLLAPSED_PREFIXES.some(prefix => location.pathname.startsWith(prefix))) {
       setCollapsed(true);
     } else {
       setCollapsed(false);
