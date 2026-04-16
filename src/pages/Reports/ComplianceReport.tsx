@@ -1075,7 +1075,8 @@ function ComplianceRateChart() {
   }
 
   const handleMouseMove = (e: React.MouseEvent<SVGSVGElement>, org: string, cp: typeof CHECKPOINTS[0], value: number) => {
-    const rect = (e.currentTarget as SVGSVGElement).getBoundingClientRect();
+    const rect = containerRef.current?.getBoundingClientRect();
+    if (!rect) return;
     setHoveredInfo({ org, label: cp.label, value, x: e.clientX - rect.left, y: e.clientY - rect.top });
   };
 
@@ -1109,8 +1110,8 @@ function ComplianceRateChart() {
         {hoveredInfo && (
           <div className="cr-chart-tooltip" style={{
             position: 'absolute',
-            left: Math.min(hoveredInfo.x, (containerRef.current?.offsetWidth ?? 400) - 200),
-            top: hoveredInfo.y - 70,
+            left: Math.min(hoveredInfo.x + 14, (containerRef.current?.offsetWidth ?? 400) - 210),
+            top: Math.max(4, hoveredInfo.y - 80),
             zIndex: 20,
             pointerEvents: 'none',
           }}>
