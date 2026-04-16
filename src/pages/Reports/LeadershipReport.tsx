@@ -284,8 +284,8 @@ function FullBarChart() {
   const data = WEEKLY_NOTES;
   const svgW = 600, svgH = 130;
   const barW = svgW / data.length;
-  const Y_MAX = 150000;
-  const yTicks = [30000, 60000, 90000, 120000, 150000];
+  const Y_MAX = 1500;
+  const yTicks = [300, 600, 900, 1200, 1500];
   const toY = (v: number) => svgH - (v / Y_MAX) * svgH;
 
   const handleMouseMove = (e: React.MouseEvent<SVGSVGElement>) => {
@@ -427,11 +427,14 @@ function FullBarChart() {
 }
 
 const ACTIVITY_COLORS = [
-  { key: 'individual' as const, color: '#26C6DA', label: 'Individual' },
-  { key: 'other' as const, color: '#283593', label: 'Other' },
+  { key: 'individual' as const,     color: '#26C6DA', label: 'Individual' },
+  { key: 'other' as const,          color: '#283593', label: 'Other' },
   { key: 'caseManagement' as const, color: '#4DB6AC', label: 'Case Management' },
-  { key: 'peerSupport' as const, color: '#EF6C00', label: 'Peer Support' },
-  { key: 'psychiatry' as const, color: '#607D8B', label: 'Psychiatry' },
+  { key: 'peerSupport' as const,    color: '#EF6C00', label: 'Peer Support' },
+  { key: 'playTherapy' as const,    color: '#AB47BC', label: 'Play Therapy' },
+  { key: 'armhs' as const,          color: '#66BB6A', label: 'ARMHS' },
+  { key: 'earlyChildhood' as const, color: '#FFA726', label: 'Early Childhood' },
+  { key: 'psychiatry' as const,     color: '#607D8B', label: 'Psychiatry' },
 ];
 
 function ActivityTypesChart() {
@@ -440,8 +443,8 @@ function ActivityTypesChart() {
   const data = ACTIVITY_TYPE_DATA;
   const svgW = 600, svgH = 130;
   const barW = svgW / data.length;
-  const Y_MAX = 150000;
-  const yTicks = [30000, 60000, 90000, 120000, 150000];
+  const Y_MAX = 1500;
+  const yTicks = [300, 600, 900, 1200, 1500];
   const toY = (v: number) => svgH - (v / Y_MAX) * svgH;
 
   const handleMouseMove = (e: React.MouseEvent<SVGSVGElement>) => {
@@ -491,13 +494,16 @@ function ActivityTypesChart() {
 
           {/* Stacked bars */}
           {data.map((d, i) => {
-            const total = d.individual + d.other + d.caseManagement + d.peerSupport + d.psychiatry;
+            const total = d.individual + d.other + d.caseManagement + d.peerSupport + d.playTherapy + d.armhs + d.earlyChildhood + d.psychiatry;
             const segments = [
-              { value: d.individual, color: '#26C6DA' },
-              { value: d.other, color: '#283593' },
+              { value: d.individual,     color: '#26C6DA' },
+              { value: d.other,          color: '#283593' },
               { value: d.caseManagement, color: '#4DB6AC' },
-              { value: d.peerSupport, color: '#EF6C00' },
-              { value: d.psychiatry, color: '#607D8B' },
+              { value: d.peerSupport,    color: '#EF6C00' },
+              { value: d.playTherapy,    color: '#AB47BC' },
+              { value: d.armhs,          color: '#66BB6A' },
+              { value: d.earlyChildhood, color: '#FFA726' },
+              { value: d.psychiatry,     color: '#607D8B' },
             ];
             let cumY = svgH; // start from bottom
             return (
@@ -597,8 +603,8 @@ function NotesPerProviderChart() {
   const data = NOTES_PER_PROVIDER;
   const svgW = 600, svgH = 130;
   const barW = svgW / data.length;
-  const Y_MAX = 15;
-  const yTicks = [3, 6, 9, 12, 15];
+  const Y_MAX = 20;
+  const yTicks = [5, 10, 15, 20];
   const toY = (v: number) => svgH - (v / Y_MAX) * svgH;
 
   const handleMouseMove = (e: React.MouseEvent<SVGSVGElement>) => {
