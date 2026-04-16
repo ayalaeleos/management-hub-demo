@@ -71,6 +71,8 @@ export interface ProviderAnalysisRow {
   goldenThread: number;
   interventionUsed: number;
   clientResponse: number;
+  barriersAddressed: number;
+  serviceCodeMatch: number;
 }
 
 export const PROVIDER_ANALYSIS_DATA: ProviderAnalysisRow[] = complianceData.providers.map(p => ({
@@ -87,6 +89,8 @@ export const PROVIDER_ANALYSIS_DATA: ProviderAnalysisRow[] = complianceData.prov
   goldenThread: p.goldenThread,
   interventionUsed: p.interventionUsed,
   clientResponse: p.clientResponse,
+  barriersAddressed: p.barriersAddressed,
+  serviceCodeMatch: p.serviceCodeMatch,
 }));
 
 // ── Key Improvements (Eleos vs non-Eleos comparison) ──────────────────────────

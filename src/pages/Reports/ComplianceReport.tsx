@@ -1010,43 +1010,46 @@ function SupervisorsQualityTable() {
 // ─── Compliance Rate by Checkpoint Chart ─────────────────────────────────────
 
 const CHECKPOINTS = [
-  { key: 'completeness',     label: 'completeness',     color: '#86efac' },
-  { key: 'uniqueness',       label: 'uniqueness',       color: '#d1d5db' },
-  { key: 'compliantPlan',    label: 'compliant plan',   color: '#60a5fa' },
-  { key: 'intervention',     label: 'intervention used',color: '#fb923c' },
-  { key: 'clientResponse',   label: 'client response',  color: '#a78bfa' },
-  { key: 'goldenThread',     label: 'golden thread',    color: '#34d399' },
-  { key: 'progressMentioned',label: 'progress mentioned',color: '#f472b6' },
+  { key: 'completeness',      label: 'completeness',      color: '#86efac' },
+  { key: 'uniqueness',        label: 'uniqueness',        color: '#d1d5db' },
+  { key: 'compliantPlan',     label: 'compliant plan',    color: '#60a5fa' },
+  { key: 'intervention',      label: 'intervention used', color: '#fb923c' },
+  { key: 'clientResponse',    label: 'client response',   color: '#a78bfa' },
+  { key: 'goldenThread',      label: 'golden thread',     color: '#34d399' },
+  { key: 'progressMentioned', label: 'progress mentioned',color: '#f472b6' },
+  { key: 'barriersAddressed', label: 'barriers addressed',color: '#facc15' },
+  { key: 'serviceCodeMatch',  label: 'service code match',color: '#2dd4bf' },
 ];
 
 type OrgRow = {
   org: string;
   completeness: number; uniqueness: number; compliantPlan: number;
   intervention: number; clientResponse: number; goldenThread: number;
-  progressMentioned: number;
+  progressMentioned: number; barriersAddressed: number; serviceCodeMatch: number;
 };
 
 const COMPLIANCE_BY_ORG: OrgRow[] = [
-  { org: 'Aurora',         completeness:99.9, uniqueness:95.2, compliantPlan:83.8, intervention:76.6, clientResponse:80.4, goldenThread:85.6, progressMentioned:74.7 },
-  { org: 'Centerstone',    completeness:100,  uniqueness:93.0, compliantPlan:80.5, intervention:44.1, clientResponse:59.1, goldenThread:48.3, progressMentioned:62.5 },
-  { org: 'Edgewood',       completeness:97.2, uniqueness:95.5, compliantPlan:85.1, intervention:67.6, clientResponse:63.5, goldenThread:58.1, progressMentioned:60.0 },
-  { org: 'Gandara',        completeness:100,  uniqueness:94.9, compliantPlan:78.4, intervention:78.6, clientResponse:83.8, goldenThread:83.8, progressMentioned:68.7 },
-  { org: 'Gulf Bend',      completeness:100,  uniqueness:90.3, compliantPlan:83.8, intervention:63.7, clientResponse:63.7, goldenThread:54.1, progressMentioned:61.0 },
-  { org: 'Hillsides',      completeness:99.7, uniqueness:92.2, compliantPlan:79.1, intervention:30.1, clientResponse:52.2, goldenThread:35.9, progressMentioned:50.7 },
-  { org: 'Hope MHC',       completeness:92.2, uniqueness:89.5, compliantPlan:76.7, intervention:58.3, clientResponse:63.5, goldenThread:41.3, progressMentioned:58.3 },
-  { org: 'Lighthouse',     completeness:99.5, uniqueness:92.6, compliantPlan:81.2, intervention:76.7, clientResponse:79.1, goldenThread:73.5, progressMentioned:75.4 },
-  { org: 'Lumera',         completeness:95.5, uniqueness:88.1, compliantPlan:74.1, intervention:62.9, clientResponse:60.9, goldenThread:63.0, progressMentioned:63.1 },
-  { org: 'Metrocare',      completeness:100,  uniqueness:93.6, compliantPlan:84.1, intervention:79.1, clientResponse:81.2, goldenThread:84.1, progressMentioned:75.4 },
-  { org: 'Northpoint',     completeness:99.7, uniqueness:92.0, compliantPlan:78.7, intervention:71.4, clientResponse:70.5, goldenThread:62.6, progressMentioned:69.3 },
-  { org: 'Peak Behavioral',completeness:88.1, uniqueness:85.1, compliantPlan:67.6, intervention:37.6, clientResponse:52.5, goldenThread:18.5, progressMentioned:41.3 },
-  { org: 'Region Ten',     completeness:100,  uniqueness:91.7, compliantPlan:85.1, intervention:83.8, clientResponse:85.1, goldenThread:83.8, progressMentioned:83.8 },
-  { org: 'Victor',         completeness:99.7, uniqueness:90.5, compliantPlan:76.7, intervention:63.5, clientResponse:65.3, goldenThread:22.6, progressMentioned:35.0 },
-  { org: 'Wyandot',        completeness:100,  uniqueness:96.3, compliantPlan:89.0, intervention:88.1, clientResponse:89.0, goldenThread:85.1, progressMentioned:86.1 },
+  { org: 'Aurora',         completeness:99.9, uniqueness:95.2, compliantPlan:83.8, intervention:76.6, clientResponse:80.4, goldenThread:85.6, progressMentioned:74.7, barriersAddressed:82.1, serviceCodeMatch:96.4 },
+  { org: 'Centerstone',    completeness:100,  uniqueness:93.0, compliantPlan:80.5, intervention:44.1, clientResponse:59.1, goldenThread:48.3, progressMentioned:62.5, barriersAddressed:68.2, serviceCodeMatch:91.3 },
+  { org: 'Edgewood',       completeness:97.2, uniqueness:95.5, compliantPlan:85.1, intervention:67.6, clientResponse:63.5, goldenThread:58.1, progressMentioned:60.0, barriersAddressed:75.4, serviceCodeMatch:94.8 },
+  { org: 'Gandara',        completeness:100,  uniqueness:94.9, compliantPlan:78.4, intervention:78.6, clientResponse:83.8, goldenThread:83.8, progressMentioned:68.7, barriersAddressed:80.3, serviceCodeMatch:95.1 },
+  { org: 'Gulf Bend',      completeness:100,  uniqueness:90.3, compliantPlan:83.8, intervention:63.7, clientResponse:63.7, goldenThread:54.1, progressMentioned:61.0, barriersAddressed:74.6, serviceCodeMatch:93.7 },
+  { org: 'Hillsides',      completeness:99.7, uniqueness:92.2, compliantPlan:79.1, intervention:30.1, clientResponse:52.2, goldenThread:35.9, progressMentioned:50.7, barriersAddressed:58.3, serviceCodeMatch:89.2 },
+  { org: 'Hope MHC',       completeness:92.2, uniqueness:89.5, compliantPlan:76.7, intervention:58.3, clientResponse:63.5, goldenThread:41.3, progressMentioned:58.3, barriersAddressed:70.1, serviceCodeMatch:90.6 },
+  { org: 'Lighthouse',     completeness:99.5, uniqueness:92.6, compliantPlan:81.2, intervention:76.7, clientResponse:79.1, goldenThread:73.5, progressMentioned:75.4, barriersAddressed:83.8, serviceCodeMatch:96.2 },
+  { org: 'Lumera',         completeness:95.5, uniqueness:88.1, compliantPlan:74.1, intervention:62.9, clientResponse:60.9, goldenThread:63.0, progressMentioned:63.1, barriersAddressed:72.4, serviceCodeMatch:92.0 },
+  { org: 'Metrocare',      completeness:100,  uniqueness:93.6, compliantPlan:84.1, intervention:79.1, clientResponse:81.2, goldenThread:84.1, progressMentioned:75.4, barriersAddressed:85.0, serviceCodeMatch:97.1 },
+  { org: 'Northpoint',     completeness:99.7, uniqueness:92.0, compliantPlan:78.7, intervention:71.4, clientResponse:70.5, goldenThread:62.6, progressMentioned:69.3, barriersAddressed:78.5, serviceCodeMatch:94.3 },
+  { org: 'Peak Behavioral',completeness:88.1, uniqueness:85.1, compliantPlan:67.6, intervention:37.6, clientResponse:52.5, goldenThread:18.5, progressMentioned:41.3, barriersAddressed:52.8, serviceCodeMatch:84.7 },
+  { org: 'Region Ten',     completeness:100,  uniqueness:91.7, compliantPlan:85.1, intervention:83.8, clientResponse:85.1, goldenThread:83.8, progressMentioned:83.8, barriersAddressed:87.2, serviceCodeMatch:97.8 },
+  { org: 'Victor',         completeness:99.7, uniqueness:90.5, compliantPlan:76.7, intervention:63.5, clientResponse:65.3, goldenThread:22.6, progressMentioned:35.0, barriersAddressed:64.9, serviceCodeMatch:91.8 },
+  { org: 'Wyandot',        completeness:100,  uniqueness:96.3, compliantPlan:89.0, intervention:88.1, clientResponse:89.0, goldenThread:85.1, progressMentioned:86.1, barriersAddressed:90.4, serviceCodeMatch:98.3 },
 ];
 
 const LEGEND_PAGES = [
   CHECKPOINTS.slice(0, 4),
   CHECKPOINTS.slice(4, 7),
+  CHECKPOINTS.slice(7, 9),
 ];
 
 function ComplianceRateChart() {
@@ -1475,6 +1478,26 @@ const CP_PROGRAMS: Record<CheckpointTab, CPQualityRow[]> = {
     { name: 'WYC-CM',                      docs: '1.57k', pct:  74.90, change:  0.20 },
     { name: '1808 Glenmar Ave-3225581000', docs: '1.3k',  pct:  63.80, change:  0.50 },
   ],
+  'Barriers Addressed': [
+    { name: 'PAC-CM',                      docs: '3.18k', pct:  82.10, change:  0.45 },
+    { name: 'CCBHC - MH Clinic',           docs: '2.74k', pct:  73.40, change: -0.60 },
+    { name: 'MHOP',                        docs: '2.04k', pct:  79.60, change:  0.30 },
+    { name: 'N/A',                         docs: '2.01k', pct:  75.80, change: -0.10 },
+    { name: 'RC03',                        docs: '1.6k',  pct:  80.90, change:  0.40 },
+    { name: 'School Based',                docs: '1.6k',  pct:  77.30, change: -0.15 },
+    { name: 'WYC-CM',                      docs: '1.57k', pct:  79.10, change:  0.25 },
+    { name: '1808 Glenmar Ave-3225581000', docs: '1.3k',  pct:  69.40, change:  0.55 },
+  ],
+  'Service Code Match': [
+    { name: 'PAC-CM',                      docs: '3.18k', pct:  96.30, change:  0.20 },
+    { name: 'CCBHC - MH Clinic',           docs: '2.74k', pct:  90.80, change: -0.30 },
+    { name: 'MHOP',                        docs: '2.04k', pct:  94.50, change:  0.15 },
+    { name: 'N/A',                         docs: '2.01k', pct:  92.10, change: -0.05 },
+    { name: 'RC03',                        docs: '1.6k',  pct:  95.40, change:  0.25 },
+    { name: 'School Based',                docs: '1.6k',  pct:  93.20, change: -0.10 },
+    { name: 'WYC-CM',                      docs: '1.57k', pct:  94.80, change:  0.10 },
+    { name: '1808 Glenmar Ave-3225581000', docs: '1.3k',  pct:  87.60, change:  0.35 },
+  ],
 };
 
 const CP_SUPERVISORS: Record<CheckpointTab, CPQualityRow[]> = {
@@ -1548,19 +1571,41 @@ const CP_SUPERVISORS: Record<CheckpointTab, CPQualityRow[]> = {
     { name: 'TARA RAHRS',        docs: '957',   pct:  83.90, change:  0.10 },
     { name: 'MARISOL SALGADO',   docs: '932',   pct:  82.50, change:  0.20 },
   ],
+  'Barriers Addressed': [
+    { name: 'HEIDI BORDELON',    docs: '7.95k', pct:  74.60, change:  0.80 },
+    { name: 'JASMINE PORTER',    docs: '7.17k', pct:  78.20, change: -0.25 },
+    { name: 'LEILA SIMMONS',     docs: '3.58k', pct:  83.10, change:  0.50 },
+    { name: 'SAMANTHA REESE',    docs: '3.47k', pct:  77.40, change: -0.40 },
+    { name: 'N/A',               docs: '2.93k', pct:  82.00, change: -0.07 },
+    { name: 'CARRILLO, LUKE I',  docs: '1.27k', pct:  85.30, change:  0.30 },
+    { name: 'TARA RAHRS',        docs: '957',   pct:  89.60, change:  0.10 },
+    { name: 'MARISOL SALGADO',   docs: '932',   pct:  88.10, change:  0.20 },
+  ],
+  'Service Code Match': [
+    { name: 'HEIDI BORDELON',    docs: '7.95k', pct:  90.10, change:  0.40 },
+    { name: 'JASMINE PORTER',    docs: '7.17k', pct:  92.50, change: -0.15 },
+    { name: 'LEILA SIMMONS',     docs: '3.58k', pct:  95.80, change:  0.30 },
+    { name: 'SAMANTHA REESE',    docs: '3.47k', pct:  91.70, change: -0.20 },
+    { name: 'N/A',               docs: '2.93k', pct:  94.90, change: -0.07 },
+    { name: 'CARRILLO, LUKE I',  docs: '1.27k', pct:  96.40, change:  0.20 },
+    { name: 'TARA RAHRS',        docs: '957',   pct:  98.20, change:  0.10 },
+    { name: 'MARISOL SALGADO',   docs: '932',   pct:  97.60, change:  0.15 },
+  ],
 };
 
-const CHECKPOINT_TABS = ['Completeness', 'Uniqueness', 'Golden Thread', 'Intervention Used', 'Client Response', 'Progress Mentioned', 'Compliant Plan'] as const;
+const CHECKPOINT_TABS = ['Completeness', 'Uniqueness', 'Golden Thread', 'Intervention Used', 'Client Response', 'Progress Mentioned', 'Compliant Plan', 'Barriers Addressed', 'Service Code Match'] as const;
 type CheckpointTab = typeof CHECKPOINT_TABS[number];
 
 const CHECKPOINT_STATS: Record<CheckpointTab, { compliantDocs: string; compliancePct: string }> = {
-  'Completeness':       { compliantDocs: '350,306', compliancePct: '95.95%' },
-  'Uniqueness':         { compliantDocs: '321,884', compliancePct: '88.43%' },
-  'Golden Thread':      { compliantDocs: '244,512', compliancePct: '67.15%' },
-  'Intervention Used':  { compliantDocs: '268,730', compliancePct: '73.83%' },
-  'Client Response':    { compliantDocs: '209,174', compliancePct: '57.47%' },
-  'Progress Mentioned': { compliantDocs: '192,447', compliancePct: '52.88%' },
-  'Compliant Plan':     { compliantDocs: '263,561', compliancePct: '72.41%' },
+  'Completeness':        { compliantDocs: '350,306', compliancePct: '95.95%' },
+  'Uniqueness':          { compliantDocs: '321,884', compliancePct: '88.43%' },
+  'Golden Thread':       { compliantDocs: '244,512', compliancePct: '67.15%' },
+  'Intervention Used':   { compliantDocs: '268,730', compliancePct: '73.83%' },
+  'Client Response':     { compliantDocs: '209,174', compliancePct: '57.47%' },
+  'Progress Mentioned':  { compliantDocs: '192,447', compliancePct: '52.88%' },
+  'Compliant Plan':      { compliantDocs: '263,561', compliancePct: '72.41%' },
+  'Barriers Addressed':  { compliantDocs: '284,112', compliancePct: '78.06%' },
+  'Service Code Match':  { compliantDocs: '338,947', compliancePct: '93.11%' },
 };
 
 // Per-checkpoint timeline values (weekly, roughly flat near their compliance %)
@@ -1635,6 +1680,26 @@ const CHECKPOINT_TIMELINE: Record<CheckpointTab, { label: string; date: string; 
     {label:'29',  date:'Mon Mar 29',  value:74.8},{label:'Apr', date:'Mon Apr 5',   value:75.2},
     {label:'8',   date:'Mon Apr 8',   value:74.6},
   ],
+  'Barriers Addressed': [
+    {label:'8',   date:'Mon Jan 8',   value:75.8},{label:'15',  date:'Mon Jan 15',  value:76.9},
+    {label:'22',  date:'Mon Jan 22',  value:75.4},{label:'29',  date:'Mon Jan 29',  value:77.5},
+    {label:'Feb', date:'Mon Feb 5',   value:76.8},{label:'8',   date:'Mon Feb 8',   value:78.1},
+    {label:'15',  date:'Mon Feb 15',  value:77.3},{label:'22',  date:'Mon Feb 22',  value:78.6},
+    {label:'Mar', date:'Mon Mar 1',   value:77.9},{label:'8',   date:'Mon Mar 8',   value:79.2},
+    {label:'15',  date:'Mon Mar 15',  value:78.1},{label:'22',  date:'Mon Mar 22',  value:78.8},
+    {label:'29',  date:'Mon Mar 29',  value:79.5},{label:'Apr', date:'Mon Apr 5',   value:79.9},
+    {label:'8',   date:'Mon Apr 8',   value:79.3},
+  ],
+  'Service Code Match': [
+    {label:'8',   date:'Mon Jan 8',   value:91.8},{label:'15',  date:'Mon Jan 15',  value:92.4},
+    {label:'22',  date:'Mon Jan 22',  value:91.5},{label:'29',  date:'Mon Jan 29',  value:92.9},
+    {label:'Feb', date:'Mon Feb 5',   value:92.1},{label:'8',   date:'Mon Feb 8',   value:93.3},
+    {label:'15',  date:'Mon Feb 15',  value:92.6},{label:'22',  date:'Mon Feb 22',  value:93.6},
+    {label:'Mar', date:'Mon Mar 1',   value:93.0},{label:'8',   date:'Mon Mar 8',   value:93.8},
+    {label:'15',  date:'Mon Mar 15',  value:92.8},{label:'22',  date:'Mon Mar 22',  value:93.5},
+    {label:'29',  date:'Mon Mar 29',  value:94.0},{label:'Apr', date:'Mon Apr 5',   value:93.9},
+    {label:'8',   date:'Mon Apr 8',   value:94.2},
+  ],
 };
 
 const CHECKPOINT_COLOR: Record<CheckpointTab, string> = {
@@ -1645,6 +1710,8 @@ const CHECKPOINT_COLOR: Record<CheckpointTab, string> = {
   'Client Response':    '#fb923c',
   'Progress Mentioned': '#a78bfa',
   'Compliant Plan':     '#38bdf8',
+  'Barriers Addressed': '#facc15',
+  'Service Code Match': '#2dd4bf',
 };
 
 function CheckpointTimeline({ cpTab }: { cpTab: CheckpointTab }) {
@@ -1835,6 +1902,8 @@ const CP_COLUMN: Record<CheckpointTab, keyof ProviderAnalysisRow> = {
   'Client Response':    'clientResponse',
   'Progress Mentioned': 'progressMentioned',
   'Compliant Plan':     'compliantPlan',
+  'Barriers Addressed': 'barriersAddressed',
+  'Service Code Match': 'serviceCodeMatch',
 };
 
 function CPProviderTable({ cpTab }: { cpTab: CheckpointTab }) {
