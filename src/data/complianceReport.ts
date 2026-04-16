@@ -99,11 +99,13 @@ export interface KeyImprovementRow {
 }
 
 export const KEY_IMPROVEMENTS: KeyImprovementRow[] = [
-  { label: 'client response',   eleos: 66.31, nonEleos: 57.89 },
-  { label: 'compliant plan',    eleos: 94.70, nonEleos: 87.64 },
-  { label: 'compliant plan',    eleos: 81.47, nonEleos: 66.45 },
-  { label: 'intervention used', eleos: 59.66, nonEleos: 52.43 },
-  { label: 'intervention used', eleos: 79.89, nonEleos: 70.49 },
-  { label: 'uniqueness',        eleos: 57.28, nonEleos: 45.29 },
-  { label: 'uniqueness',        eleos: 89.01, nonEleos: 77.48 },
+  { label: 'completeness',       eleos: 94.70, nonEleos: 85.30 },
+  { label: 'uniqueness',         eleos: 86.80, nonEleos: 70.20 },
+  { label: 'progress mentioned', eleos: 57.90, nonEleos: 44.60 },
+  { label: 'golden thread',      eleos: 73.10, nonEleos: 64.80 },
+  { label: 'intervention used',  eleos: 78.50, nonEleos: 68.40 },
+  { label: 'client response',    eleos: 66.31, nonEleos: 57.89 },
+  { label: 'compliant plan',     eleos: 80.20, nonEleos: 65.10 },
+  { label: 'barriers addressed', eleos: 84.90, nonEleos: 63.50 },
+  { label: 'service code match', eleos: 93.20, nonEleos: 73.80 },
 ];
