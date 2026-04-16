@@ -2460,7 +2460,6 @@ export function ComplianceReport() {
                 </svg>
                 Published
               </span>
-              <span className="compliance-report__meta">Gabriel Krell Krell</span>
               <span className="compliance-report__meta">2 days ago</span>
             </div>
             <button className="compliance-report__edit-btn">Edit dashboard</button>
