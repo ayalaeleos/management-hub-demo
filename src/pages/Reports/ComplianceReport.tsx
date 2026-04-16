@@ -3,7 +3,9 @@ import './ComplianceReport.css';
 import {
   COMPLIANCE_STATS,
   KEY_IMPROVEMENTS,
+  PROVIDER_ANALYSIS_DATA,
   type KeyImprovementRow,
+  type ProviderAnalysisRow,
 } from '../../data/complianceReport';
 
 // ─── Filter Types & Context ───────────────────────────────────────────────────
@@ -50,6 +52,20 @@ function useFilters(): FilterState {
 
 const TIME_RANGE_OPTIONS = ['Last week', 'Last month', 'Last quarter', 'Last year'];
 const ORGANIZATION_OPTIONS = ['Merakey', 'Wyandot BHN', 'PSYgenics', 'CrossWinds', 'Valley Care'];
+
+// Supervisor → organization mapping (used for org filter since JSON data uses generic email domains)
+const SUPERVISOR_ORG_MAP: Record<string, string> = {
+  'Sarah Mitchell':    'Merakey',
+  'James Anderson':    'Merakey',
+  'Robert Chen':       'Wyandot BHN',
+  'Emily Thompson':    'Wyandot BHN',
+  'Michael Johnson':   'PSYgenics',
+  'Maria Rodriguez':   'PSYgenics',
+  'Kimberly Green':    'CrossWinds',
+  'David Brown':       'CrossWinds',
+  'Lisa Anderson':     'Valley Care',
+  'Jennifer Williams': 'Valley Care',
+};
 
 // ─── FilterDropdown Component ─────────────────────────────────────────────────
 
@@ -805,30 +821,7 @@ function QualityTable({ title, rows, totalRecords, nameCol }: {
 
 // ─── Filter Helpers ───────────────────────────────────────────────────────────
 
-// Map email domain → organization name
-const EMAIL_ORG_MAP: Record<string, string> = {
-  'merakey.org':      'Merakey',
-  'wyandotbhn.org':   'Wyandot BHN',
-  'psygenics.org':    'PSYgenics',
-  'crosswindsks.org': 'CrossWinds',
-  'valleycare.org':   'Valley Care',
-  'ucsvt.org':        'Valley Care',
-  'brightpath.org':   'CrossWinds',
-  'brightfutures.org':'CrossWinds',
-  'communitymhc.org': 'Merakey',
-  'westgateclinic.net':'Merakey',
-  'northstarcs.org':  'Wyandot BHN',
-  'horizonbh.com':    'Wyandot BHN',
-  'bluepointmh.org':  'PSYgenics',
-  'eastsidewellness.com': 'Valley Care',
-};
-
-function orgFromEmail(email: string): string {
-  const domain = email.split('@')[1] ?? '';
-  return EMAIL_ORG_MAP[domain] ?? '';
-}
-
-// Time range → cutoff date (today = 2026-04-09)
+// Time range → cutoff date (today = 2026-04-16)
 function timeRangeCutoff(range: string): Date | null {
   const today = new Date('2026-04-09');
   if (range === 'Last week')    { const d = new Date(today); d.setDate(d.getDate() - 7);   return d; }
@@ -839,7 +832,7 @@ function timeRangeCutoff(range: string): Date | null {
 }
 
 function matchesProviderFilters(r: ProviderAnalysisRow, filters: FilterState): boolean {
-  if (filters.organizations.length > 0 && !filters.organizations.includes(orgFromEmail(r.email))) return false;
+  if (filters.organizations.length > 0 && !filters.organizations.includes(SUPERVISOR_ORG_MAP[r.supervisors] ?? '')) return false;
   if (filters.supervisors.length > 0 && !filters.supervisors.includes(r.supervisors)) return false;
   if (filters.programs.length > 0 && !filters.programs.includes(r.program)) return false;
   if (filters.providers.length > 0 && !filters.providers.includes(r.provider)) return false;
@@ -847,7 +840,7 @@ function matchesProviderFilters(r: ProviderAnalysisRow, filters: FilterState): b
 }
 
 function matchesDocFilters(r: DocByCheckpointRow, filters: FilterState): boolean {
-  if (filters.organizations.length > 0 && !filters.organizations.includes(orgFromEmail(r.providerEmail))) return false;
+  if (filters.organizations.length > 0 && !filters.organizations.includes(SUPERVISOR_ORG_MAP[r.supervisors] ?? '')) return false;
   if (filters.businessUnits.length > 0 && !filters.businessUnits.includes(r.businessUnit)) return false;
   if (filters.programs.length > 0 && !filters.programs.includes(r.program)) return false;
   if (filters.supervisors.length > 0 && !filters.supervisors.includes(r.supervisors)) return false;
@@ -864,32 +857,7 @@ function matchesDocFilters(r: DocByCheckpointRow, filters: FilterState): boolean
 }
 
 // ─── Analysis by Provider Table ───────────────────────────────────────────────
-
-interface ProviderAnalysisRow {
-  provider: string; email: string; supervisors: string; program: string;
-  documents: number; qualityScore: number;
-  completeness: number; uniqueness: number; progressMentioned: number;
-  compliantPlan: number; goldenThread: number; interventionUsed: number;
-  clientResponse: number;
-}
-
-const PROVIDER_ANALYSIS_DATA: ProviderAnalysisRow[] = [
-  { provider:'hamilton, kaitlyn',    email:'khamilton@ucsvt.org',             supervisors:'cmancini',            program:'Home + Community Based Srvcs - DS', documents:606, qualityScore:36.4,  completeness:69.47, uniqueness:47.85, progressMentioned:2.15,  compliantPlan:11.39, goldenThread:52.48, interventionUsed:50.00, clientResponse:7.43  },
-  { provider:'frasher, deborah',     email:'dfrasher@crosswindsks.org',       supervisors:'Tammy List',          program:'Medication Clinic',                 documents:513, qualityScore:39.94, completeness:100.00,uniqueness:48.34, progressMentioned:61.40, compliantPlan:93.37, goldenThread:0.00,  interventionUsed:100.00,clientResponse:77.19 },
-  { provider:'durall, emily',        email:'emily.durall@wyandotbhn.org',     supervisors:'PODREBARAC, CLARICE', program:'PAC-MEDS',                          documents:487, qualityScore:85.08, completeness:100.00,uniqueness:99.38, progressMentioned:43.74, compliantPlan:78.03, goldenThread:93.84, interventionUsed:81.31, clientResponse:34.50 },
-  { provider:'rochemartinez,mario',  email:'mario.rochemartinez@merakey.org', supervisors:'JASMINE PORTER',     program:'106 Heymann Blvd, Lafayette',       documents:485, qualityScore:68.26, completeness:99.79, uniqueness:88.25, progressMentioned:34.64, compliantPlan:27.42, goldenThread:51.55, interventionUsed:49.90, clientResponse:29.07 },
-  { provider:'hostnick,donna',       email:'donna.hostnick@merakey.org',      supervisors:'HEIDI BORDELON',     program:'8932 Jewella Ave, Suite A',         documents:485, qualityScore:56.91, completeness:75.67, uniqueness:71.55, progressMentioned:10.52, compliantPlan:18.14, goldenThread:39.79, interventionUsed:59.59, clientResponse:56.70 },
-  { provider:'anderson,geraldine',   email:'geraldine.anderson@merakey.org',  supervisors:'SAMANTHA REESE',     program:'3303 Tulane Ave',                   documents:485, qualityScore:78.69, completeness:100.00,uniqueness:96.08, progressMentioned:33.40, compliantPlan:48.04, goldenThread:57.73, interventionUsed:77.11, clientResponse:64.95 },
-  { provider:'henderson, tayler',    email:'tayler.henderson@merakey.org',    supervisors:'Linda Torres',        program:'Adult Outpatient',                  documents:421, qualityScore:72.34, completeness:98.10, uniqueness:82.50, progressMentioned:45.20, compliantPlan:61.30, goldenThread:68.90, interventionUsed:71.20, clientResponse:55.80 },
-  { provider:'morgan, teresa',       email:'teresa.m@brightfutures.org',      supervisors:'N/A',                program:'N/A',                               documents:398, qualityScore:81.22, completeness:100.00,uniqueness:91.40, progressMentioned:52.30, compliantPlan:74.60, goldenThread:79.10, interventionUsed:83.00, clientResponse:68.40 },
-  { provider:'nguyen, paul',         email:'p.nguyen@valleycare.org',         supervisors:'N/A',                program:'Peer Support',                      documents:312, qualityScore:64.88, completeness:88.50, uniqueness:73.20, progressMentioned:28.70, compliantPlan:42.80, goldenThread:55.30, interventionUsed:62.10, clientResponse:49.60 },
-  { provider:'chen, robert',         email:'r.chen@eastsidewellness.com',     supervisors:'Karen Wu',           program:'Outpatient MH',                     documents:289, qualityScore:77.41, completeness:99.20, uniqueness:89.70, progressMentioned:38.90, compliantPlan:65.40, goldenThread:72.80, interventionUsed:75.50, clientResponse:61.30 },
-  { provider:'flores, sofia',        email:'s.flores@communitymhc.org',       supervisors:'N/A',                program:'Crisis Services',                   documents:254, qualityScore:59.73, completeness:82.30, uniqueness:66.10, progressMentioned:22.40, compliantPlan:35.90, goldenThread:47.20, interventionUsed:55.80, clientResponse:43.70 },
-  { provider:'kim, benjamin',        email:'ben.k@westgateclinic.net',        supervisors:'Tina Walsh',         program:'Residential',                       documents:231, qualityScore:88.55, completeness:100.00,uniqueness:97.30, progressMentioned:61.80, compliantPlan:83.20, goldenThread:91.40, interventionUsed:88.60, clientResponse:75.20 },
-  { provider:'owens, helen',         email:'helen.o@northstarcs.org',         supervisors:'N/A',                program:'N/A',                               documents:198, qualityScore:45.62, completeness:74.20, uniqueness:52.80, progressMentioned:15.30, compliantPlan:22.60, goldenThread:38.40, interventionUsed:41.90, clientResponse:33.50 },
-  { provider:'price, jerome',        email:'j.price@horizonbh.com',           supervisors:'N/A',                program:'Adult MH',                          documents:187, qualityScore:70.18, completeness:96.40, uniqueness:80.90, progressMentioned:41.20, compliantPlan:58.70, goldenThread:65.30, interventionUsed:68.80, clientResponse:53.40 },
-  { provider:'vance, miranda',       email:'miranda.v@bluepointmh.org',       supervisors:'N/A',                program:'Outreach',                          documents:165, qualityScore:53.29, completeness:79.60, uniqueness:60.40, progressMentioned:18.90, compliantPlan:29.30, goldenThread:44.10, interventionUsed:49.70, clientResponse:40.20 },
-];
+// PROVIDER_ANALYSIS_DATA and ProviderAnalysisRow are imported from ../../data/complianceReport
 
 const ABP_SORT_ICON = () => <span className="cr-sort-icon">⇅</span>;
 

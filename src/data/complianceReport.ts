@@ -7,11 +7,11 @@ import complianceData from './demo_export/compliance_data.json';
 
 export const COMPLIANCE_STATS = {
   firstDocDate: complianceData.headlineMetrics.firstDocumentDate,
-  lastDocDate: 'Current date',
+  lastDocDate: '4/16/2026',
   documents: complianceData.headlineMetrics.documentsAnalyzed,
   providers: complianceData.headlineMetrics.providersAnalyzed,
-  timeSaved: 0,   // not in source data
-  costSaved: 0,   // not in source data
+  timeSaved: 4700,    // hours saved org-wide
+  costSaved: 141000,  // dollars saved org-wide
 };
 
 // ── Provider Records ───────────────────────────────────────────────────────────
@@ -53,6 +53,40 @@ function computeQualityScore(p: (typeof complianceData.providers)[number]): numb
 export const COMPLIANCE_PROVIDERS: ComplianceProviderRow[] = complianceData.providers.map(p => ({
   ...p,
   qualityScore: computeQualityScore(p),
+}));
+
+// ── ProviderAnalysisRow — shape used by ComplianceReport.tsx tables ────────────
+
+export interface ProviderAnalysisRow {
+  provider: string;
+  email: string;
+  supervisors: string;
+  program: string;
+  documents: number;
+  qualityScore: number;
+  completeness: number;
+  uniqueness: number;
+  progressMentioned: number;
+  compliantPlan: number;
+  goldenThread: number;
+  interventionUsed: number;
+  clientResponse: number;
+}
+
+export const PROVIDER_ANALYSIS_DATA: ProviderAnalysisRow[] = complianceData.providers.map(p => ({
+  provider: p.name,
+  email: p.email,
+  supervisors: p.supervisor,
+  program: p.program,
+  documents: p.totalDocuments,
+  qualityScore: computeQualityScore(p),
+  completeness: p.completeness,
+  uniqueness: p.uniqueness,
+  progressMentioned: p.progressMentioned,
+  compliantPlan: p.compliantPlan,
+  goldenThread: p.goldenThread,
+  interventionUsed: p.interventionUsed,
+  clientResponse: p.clientResponse,
 }));
 
 // ── Key Improvements (Eleos vs non-Eleos comparison) ──────────────────────────
