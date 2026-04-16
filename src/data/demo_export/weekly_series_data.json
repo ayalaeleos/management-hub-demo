@@ -1,0 +1,73 @@
+{
+  "description": "Deterministic weekly time series data for Documentation dashboard charts",
+  "weeklyNotesGenerated": {
+    "description": "Total notes generated per week, split between Live Session (~45%) and Text Summary (~55%)",
+    "data": [
+      { "month": "Jul", "weekValues": [104, 228, 197, 213, 268, 371, 454, 361, 432] },
+      { "month": "Aug", "weekValues": [424, 486] },
+      { "month": "Sep", "weekValues": [735, 744, 612, 777] },
+      { "month": "Oct", "weekValues": [1000, 997, 801, 771] },
+      { "month": "Nov", "weekValues": [1100, 1150, 1110] },
+      { "month": "Dec", "weekValues": [459, 643] },
+      { "month": "Jan", "weekValues": [1120, 1280, 1080, 1390, 1320] },
+      { "month": "Feb", "weekValues": [1180, 1140, 1230, 1280, 1140, 875] },
+      { "month": "Mar", "weekValues": [] }
+    ],
+    "splitRatio": {
+      "liveSession": 0.45,
+      "textSummary": 0.55
+    }
+  },
+  "weeklyActivityType": {
+    "description": "Notes generated per week by activity type (8 categories)",
+    "data": [
+      { "month": "Jul", "weekValues": [104, 226] },
+      { "month": "Aug", "weekValues": [197, 213, 268, 371] },
+      { "month": "Sep", "weekValues": [454, 361, 432, 424] },
+      { "month": "Oct", "weekValues": [486, 735, 744, 612] },
+      { "month": "Nov", "weekValues": [777, 1000, 997] },
+      { "month": "Dec", "weekValues": [801, 771, 1100, 1150] },
+      { "month": "Jan", "weekValues": [1110, 459] },
+      { "month": "Feb", "weekValues": [643, 1120, 1280, 1080, 1390] },
+      { "month": "Mar", "weekValues": [1320, 1180, 1140, 1230, 1280, 1140, 875, 182] }
+    ],
+    "distributionRatios": {
+      "individual": 0.68,
+      "other": 0.08,
+      "caseManagement": 0.048,
+      "peerSupport": 0.0384,
+      "playTherapy": 0.032,
+      "armhs": 0.0256,
+      "earlyChildhood": 0.0256,
+      "psychiatry": "remaining"
+    },
+    "activityTypes": [
+      "individual",
+      "other",
+      "caseManagement",
+      "peerSupport",
+      "playTherapy",
+      "armhs",
+      "earlyChildhood",
+      "psychiatry"
+    ]
+  },
+  "weeklyNotesPerProvider": {
+    "description": "Average notes per provider per week",
+    "data": [
+      { "month": "Jul", "weekValues": [8] },
+      { "month": "Aug", "weekValues": [17.54, 16.42, 15.21, 9.76, 8.38] },
+      { "month": "Sep", "weekValues": [8.8, 11.35, 11.04, 11.28, 9.39] },
+      { "month": "Oct", "weekValues": [10.21, 9.71, 10.30] },
+      { "month": "Nov", "weekValues": [12.74, 12.16, 11.14, 9.54] },
+      { "month": "Dec", "weekValues": [8.57, 10.33, 11.76, 7.5] },
+      { "month": "2026", "weekValues": [8.62] },
+      { "month": "Feb", "weekValues": [12.04, 10.89, 10.05, 13.49, 12.92, 11.21] },
+      { "month": "Mar", "weekValues": [11.21, 11.27, 10.91, 9.95, 2.48] }
+    ]
+  },
+  "chartMetadata": {
+    "monthLabels": ["Jul", "Aug", "Sep", "Oct", "Nov", "Dec", "Jan", "Feb", "Mar"],
+    "note": "First week of each month is marked with isFirstOfMonth flag for chart labeling"
+  }
+}
